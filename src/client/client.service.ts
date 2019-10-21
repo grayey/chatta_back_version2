@@ -1,0 +1,135 @@
+import { Injectable } from '@nestjs/common';
+import { Client } from './interfaces/client.interface';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { EmailService } from '../services/Email/email.service';
+import { TokenService } from '../services/JWT/jwt.service';
+import { ResponseService } from '../services/ResponseHandler/response-handler.service';
+import * as bcrypt from 'bcrypt';
+
+@Injectable()
+export class ClientsService {
+  protected BASE_URL = process.env.BASE_URL;
+
+  constructor(
+    @InjectModel('Client') private clientModel: Model<Client>,
+    private emailService: EmailService,
+    private responseService: ResponseService,
+  ) {}
+  async createTokenAndSendEmail(userExist) {
+    const tokenCreated = await TokenService.getToken(
+      {
+        email: userExist.email,
+        id: userExist.id,
+        fullName: userExist.fullName,
+      },
+      '1h',
+    );
+    if (tokenCreated) {
+      const isEmailSent = await this.emailService.verifyEmail(
+        userExist.email,
+        userExist.fullName,
+        tokenCreated,
+      );
+      return isEmailSent;
+    }
+  }
+  async validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  async findAll(): Promise<Client[]> {
+    return await this.clientModel.find();
+  }
+  async findOneByEmail(email): Promise<Client> {
+    return await this.clientModel.findOne({ email });
+  }
+  async verifyEmail(email, req, res): Promise<any> {
+    const foundUser = await this.clientModel.findOne({ email });
+    if (foundUser && foundUser.isVerified) {
+      res.redirect(`${this.BASE_URL}/dashboard/user`);
+      return await this.responseService.requestSuccessful(res, {
+        success: true,
+        message: 'User is already verified',
+      });
+    }
+    if (foundUser) {
+      const verifiedUser = await this.clientModel.updateOne(
+        { email },
+        { $set: { isVerified: true } },
+      );
+      if (verifiedUser) {
+        const isEmailSent = this.emailService.confirmRegistrationComplete(
+          email,
+        );
+        if (isEmailSent) {
+          const tokenCreated = await TokenService.getToken({
+            email,
+            fullName: foundUser.fullName,
+            id: foundUser.id,
+          });
+          res.redirect(`${this.BASE_URL}/dashboard/user`);
+          return this.responseService.requestSuccessful(res, {
+            success: true,
+            message: `User ${foundUser.fullName} created successfully`,
+            id: foundUser.id,
+            fullName: foundUser.fullName,
+            token: tokenCreated,
+          });
+        }
+      }
+    }
+    return false;
+  }
+  async signUp(client: Client, req, res): Promise<Client> {
+    if (!(await this.validateEmail(client.email))) {
+      return this.responseService.clientError(
+        res,
+        'please enter a valid email',
+      );
+    }
+    const userExist = await this.clientModel.findOne({ email: client.email });
+    try {
+      if (userExist) {
+        if (!userExist.isVerified) {
+          const isEmailSent = await this.createTokenAndSendEmail(userExist);
+          if (isEmailSent) {
+            return this.responseService.clientError(
+              res,
+              'You had started the registration process earlier. ' +
+                'An email has been sent to your email address. ' +
+                'Please check your email to complete your registration.',
+            );
+          }
+          return this.responseService.clientError(
+            res,
+            'Your registration could not be completed. Please try again',
+          );
+        }
+        return this.responseService.clientError(
+          res,
+          'You are a registered user on this platform. Please proceed to login',
+        );
+      }
+      client.password = await bcrypt.hash(client.password, 6);
+      const user = new this.clientModel(client);
+      const userCreated = await user.save();
+      const isEmailSent = await this.createTokenAndSendEmail(userCreated);
+      if (isEmailSent) {
+        return this.responseService.requestSuccessful(res, {
+          success: true,
+          message:
+            'An email has been sent to your ' +
+            'email address. Please check your email to complete your registration',
+        });
+      }
+      return this.responseService.clientError(
+        res,
+        'Your registration could not be completed. Please try again',
+      );
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
+}
