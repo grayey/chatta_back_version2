@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { ClientService } from './client.service';
@@ -41,5 +42,9 @@ export class ClientController {
     @Param('id') id,
   ): Promise<Client> {
     return this.clientService.update(id, updateClientDto);
+  }
+  @Patch(':id')
+  findByIdAndToggleEnable(@Param('id') id): Promise<Client> {
+    return this.clientService.findByIdAndToggleEnable(id);
   }
 }

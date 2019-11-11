@@ -6,4 +6,5 @@ export const ClientSchema = new mongoose.Schema({
   phone: Number,
   password: String,
   isAdmin: Boolean,
+  isEnabled: { type: Boolean, default: false },
 });
