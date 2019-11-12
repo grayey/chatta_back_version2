@@ -1,8 +1,11 @@
-export interface Client {
+import { Document } from 'mongoose';
+export interface Client extends Document {
   id?: string;
-  Full_name: string;
+  fullName: string;
   email: string;
   phone: number;
   password: string;
+  isVerified: boolean;
+  date: Date;
   isAdmin: boolean;
 }
