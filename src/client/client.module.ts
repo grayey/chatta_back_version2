@@ -1,14 +1,27 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ClientController } from './client.controller';
-import { ClientService } from './client.service';
+
+
+
 import { ClientSchema } from './schemas/client.schema';
+import { ClientController } from './client.controller';
+import { ClientsService } from './client.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { clientsSchema } from './schemas/client.schema';
+import { SendGridModule } from '@anchan828/nest-sendgrid';
+import { EmailService } from '../services/Email/email.service';
+import { ResponseService } from '../services/ResponseHandler/response-handler.service';
+
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Client', schema: ClientSchema }]),
+    MongooseModule.forFeature([{ name: 'Client', schema: clientsSchema }]),
+    SendGridModule.forRoot({
+      apikey: process.env.SENDGRID_API_KEY,
+    }),
   ],
   controllers: [ClientController],
-  providers: [ClientService],
+  providers: [EmailService,ClientsService, ResponseService],
+  exports: [ClientsService],
 })
+
 export class ClientsModule {}
