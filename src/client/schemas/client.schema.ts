@@ -33,4 +33,5 @@ export const clientsSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isEnabled: { type: Boolean, default: false },
 });

@@ -7,20 +7,35 @@ import { ConversationsModule } from './modules/conversations/conversations.modul
 import { MongooseModule } from '@nestjs/mongoose';
 import { QueryService } from './services/query/query.service';
 import { AuthModule } from './auth/auth.module';
-import { TreeController } from './tree/tree.controller';
-import { TreeModule } from './tree/tree.module';
-
+import { AuthService } from './auth/auth.service';
+import { SettingController } from './modules/setting/setting.controller';
+import { SettingService } from './modules/setting/setting.service';
+import { SettingSchema } from './modules/setting/schemas/setting.schema';
+import { ClientController } from './client/client.controller';
+import { ClientsService } from './client/client.service';
+import { clientsSchema } from './client/schemas/client.schema';
+import { EmailService } from './services/Email/email.service';
+import { ResponseService } from './services/ResponseHandler/response-handler.service';
 @Module({
   imports: [
+    MongooseModule.forFeature([
+      { name: 'Client', schema: clientsSchema },
+      { name: 'Setting', schema: SettingSchema },
+    ]),
     ClientsModule,
     AuthModule,
     SettingsModule,
     ConversationsModule,
     MongooseModule.forRoot(process.env.DB_URL),
-    TreeModule,
   ],
 
-  controllers: [AppController, TreeController],
-  providers: [AppService, QueryService],
+  controllers: [ClientController, SettingController],
+  providers: [
+    ClientsService,
+    SettingService,
+    QueryService,
+    EmailService,
+    ResponseService,
+  ],
 })
 export class AppModule {}

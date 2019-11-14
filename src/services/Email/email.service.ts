@@ -1,4 +1,5 @@
-import { SendGridService } from '@anchan828/nest-sendgrid';import { Injectable } from '@nestjs/common';
+import { SendGridService } from '@anchan828/nest-sendgrid';
+import { Injectable } from '@nestjs/common';
 let baseUrl = '';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -7,14 +8,14 @@ if (process.env.NODE_ENV !== 'production') {
   baseUrl = process.env.SENDGRID_PRODUCTION__URL;
 }
 
-console.log(baseUrl)
+console.log(baseUrl);
 /* eslint-disable max-len */
 /**
  * @description contains utility function to send emails
  */
 @Injectable()
 export class EmailService {
-    constructor(private sendGrid: SendGridService) {}
+  constructor(private sendGrid: SendGridService) {}
   /**
    * @param {string} email - email address to send the message to
    * @param {string} firstName - User's first name
@@ -60,12 +61,10 @@ export class EmailService {
   }
 
   /**
-  * @param {string} notificationDetails - An object
-  * containing details required to send notifications
-  * @returns {boolean} specifies if the email was sent successfully
-  */
-
-
+   * @param {string} notificationDetails - An object
+   * containing details required to send notifications
+   * @returns {boolean} specifies if the email was sent successfully
+   */
 
   /**
    * This function sends an email on verification of email address
@@ -73,7 +72,7 @@ export class EmailService {
    * @param {string} token - Token generated during signup
    * @returns {boolean} specifies if a verification email was sent to user
    * after registration
-  */
+   */
   async confirmRegistrationComplete(email) {
     const details = {
       email,
@@ -81,7 +80,7 @@ export class EmailService {
       html: `<p>Your registration has been completed<p>
       <p>Thank you for registering with Chatta.</p>
        <p> >>>
-       <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`
+       <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`,
     };
     return this.emailSender(details);
   }
@@ -91,7 +90,7 @@ export class EmailService {
    * @param {string} email - email address to send the message to
    * @returns {boolean} specifies if a verification email was sent to user
    * after registration
-  */
+   */
   async resetPassword(email) {
     const details = {
       email,
@@ -104,7 +103,7 @@ export class EmailService {
         <a  href="${baseUrl}"
           style="text-decoration: none; color: white;">
         Reset Password</a></button>
-        </div>`
+        </div>`,
     };
     return this.emailSender(details);
   }
@@ -114,12 +113,12 @@ export class EmailService {
    * @param {object} details - Object containing info for sending email
    * @returns {boolean} sends email to users
    */
-   async emailSender(details) {
+  async emailSender(details) {
     const msg = {
       from: process.env.mail_master,
       html: details.html,
       subject: details.subject,
-      to: details.email
+      to: details.email,
     };
     try {
       const isEmailSent = await this.sendGrid.send(msg);

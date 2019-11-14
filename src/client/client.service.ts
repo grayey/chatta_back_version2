@@ -132,4 +132,29 @@ export class ClientsService {
       return this.responseService.serverError(res, e.message);
     }
   }
+
+  async findOne(id: string): Promise<Client> {
+    return await this.clientModel.findOne({ _id: id });
+  }
+
+  async create(client: Client): Promise<Client> {
+    const newClient = new this.clientModel(client);
+    return await newClient.save();
+  }
+
+  async delete(id: string): Promise<Client> {
+    return await this.clientModel.findByIdAndRemove(id);
+  }
+
+  async update(id: string, client: Client): Promise<Client> {
+    return await this.clientModel.findByIdAndUpdate(id, client, { new: true });
+  }
+  async findByIdAndToggleEnable(id: string): Promise<Client> {
+    return await this.clientModel.findOne({ _id: id }, (err, clientModel) => {
+      clientModel.isEnabled = !clientModel.isEnabled;
+      clientModel.save((err, updatedClient) => {
+        return updatedClient;
+      });
+    });
+  }
 }

@@ -1,6 +1,10 @@
 import {
   Controller,
   Post,
+  Put,
+  Delete,
+  Param,
+  Patch,
   Get,
   Body,
   UseGuards,
@@ -12,9 +16,10 @@ import { ClientsService } from './client.service';
 import { Client } from '../client/interfaces/client.interface';
 import { CreateClientDto } from './dto/create-client-dto';
 import { AuthGuard } from '@nestjs/passport';
+
 @Controller('client')
 export class ClientController {
-  constructor(private readonly clientService: ClientsService) {}
+  constructor(private clientService: ClientsService) {}
   @Get()
   async findAll(): Promise<Client[]> {
     return this.clientService.findAll();
@@ -33,5 +38,31 @@ export class ClientController {
     return {
       message: 'you did it',
     };
+  }
+  @Get(':id')
+  findOne(@Param('id') id): Promise<Client> {
+    return this.clientService.findOne(id);
+  }
+
+  @Post()
+  create(@Body() createClientDto: CreateClientDto): Promise<Client> {
+    return this.clientService.create(createClientDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id): Promise<Client> {
+    return this.clientService.delete(id);
+  }
+
+  @Put(':id')
+  update(
+    @Body() updateClientDto: CreateClientDto,
+    @Param('id') id,
+  ): Promise<Client> {
+    return this.clientService.update(id, updateClientDto);
+  }
+  @Patch(':id')
+  findByIdAndToggleEnable(@Param('id') id): Promise<Client> {
+    return this.clientService.findByIdAndToggleEnable(id);
   }
 }
