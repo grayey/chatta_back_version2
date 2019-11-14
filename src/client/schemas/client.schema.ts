@@ -1,4 +1,5 @@
 
+
 import * as mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
@@ -9,6 +10,9 @@ export const ClientSchema = new mongoose.Schema({
     password: String,
     isAdmin: Boolean,
 })
+
+
+
 
 
 export const clientsSchema = new Schema({
@@ -44,4 +48,5 @@ export const clientsSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isEnabled: { type: Boolean, default: false },
 });
