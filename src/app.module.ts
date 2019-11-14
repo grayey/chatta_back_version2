@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 
+
 // import { ClientController } from './client/client.controller';
 // import { ClientsService } from './client/client.service';
 // import { ClientsModule } from './client/client.module';
@@ -12,7 +13,6 @@ import { ClientSchema } from './client/schemas/client.schema';
 // import { SettingController } from './modules/setting/setting.controller';
 // import { SettingService } from './modules/setting/setting.service';
 // import { SettingSchema } from './modules/setting/schemas/setting.schema';
-
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -32,7 +32,9 @@ import { ClientsService } from './client/client.service';
 import { clientsSchema } from './client/schemas/client.schema';
 import { EmailService } from './services/Email/email.service';
 import { ResponseService } from './services/ResponseHandler/response-handler.service';
+
 import { CompaniesModule } from './companies/companies.module';
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -44,16 +46,10 @@ import { CompaniesModule } from './companies/companies.module';
     SettingsModule,
     ConversationsModule,
     TreesModule,
-      MongooseModule.forFeature([
-          { name: 'Client', schema: ClientSchema },
-          { name: 'Setting', schema: SettingSchema },
-      ]),
     MongooseModule.forRoot(process.env.DB_URL),
     CompaniesModule,
   ],
-
-  // controllers: [ClientController, SettingController],
-  // providers: [ClientsService, SettingService, QueryService],
+  controllers: [ClientController, SettingController],
   providers: [
     ClientsService,
     SettingService,

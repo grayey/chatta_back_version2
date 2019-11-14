@@ -46,6 +46,7 @@ export class ClientsService {
 
 
 
+
   async findOne(id: string): Promise<Client> {
     return await this.clientModel.findOne({ _id: id });
   }
@@ -62,6 +63,7 @@ export class ClientsService {
   async update(id: string, client: Client): Promise<Client> {
       return await this.clientModel.findByIdAndUpdate(id, client, {new: true});
   }
+
 
   async findOneByEmail(email): Promise<Client> {
     return await this.clientModel.findOne({ email });
@@ -155,6 +157,18 @@ export class ClientsService {
 
   }
 
+    async findByIdAndToggleEnable(id: string): Promise<Client> {
+        return await this.clientModel.findOne({ _id: id }, (err, clientModel) => {
+            clientModel.isEnabled = !clientModel.isEnabled;
+            clientModel.save((err, updatedClient) => {
+                return updatedClient;
+            });
+        });
+    }
+
+
+  }
+
   // async findOne(id: string): Promise<Client> {
   //   return await this.clientModel.findOne({ _id: id });
   // }
@@ -171,12 +185,5 @@ export class ClientsService {
   // async update(id: string, client: Client): Promise<Client> {
   //   return await this.clientModel.findByIdAndUpdate(id, client, { new: true });
   // }
-  async findByIdAndToggleEnable(id: string): Promise<Client> {
-    return await this.clientModel.findOne({ _id: id }, (err, clientModel) => {
-      clientModel.isEnabled = !clientModel.isEnabled;
-      clientModel.save((err, updatedClient) => {
-        return updatedClient;
-      });
-    });
-  }
-}
+
+// }
