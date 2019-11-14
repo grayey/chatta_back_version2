@@ -6,4 +6,6 @@ export class CreateSettingDto {
   readonly delayPrompt: string;
   readonly fallbackMessage: string;
   readonly primaryColor: string;
+  readonly secondaryColor: string;
+  readonly delayTime: number;
 }

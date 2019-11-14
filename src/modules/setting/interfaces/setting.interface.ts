@@ -7,4 +7,6 @@ export interface Setting {
   delayPrompt: string;
   fallbackMessage: string;
   primaryColor: string;
+  secondaryColor: string;
+  delayTime: number;
 }

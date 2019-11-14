@@ -8,4 +8,7 @@ export const SettingSchema = new mongoose.Schema({
   delayPrompt: String,
   fallbackMessage: String,
   primaryColor: String,
+  secondaryColor: String,
+  delayTime: Number,
 });
+
