@@ -16,13 +16,18 @@ import { ClientsService } from './client/client.service';
 import { clientsSchema } from './client/schemas/client.schema';
 import { EmailService } from './services/Email/email.service';
 import { ResponseService } from './services/ResponseHandler/response-handler.service';
+import { TreeModule } from './tree/tree.module';
+import { TreeService } from './tree/tree.service';
+import { treeSchema } from './tree/schemas/tree.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Client', schema: clientsSchema },
       { name: 'Setting', schema: SettingSchema },
+      { name: 'Tree', schema: treeSchema },
     ]),
     ClientsModule,
+    TreeModule,
     AuthModule,
     SettingsModule,
     ConversationsModule,
@@ -32,6 +37,7 @@ import { ResponseService } from './services/ResponseHandler/response-handler.ser
   controllers: [ClientController, SettingController],
   providers: [
     ClientsService,
+    TreeService,
     SettingService,
     QueryService,
     EmailService,
