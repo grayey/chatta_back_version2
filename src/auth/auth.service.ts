@@ -23,13 +23,13 @@ export class AuthService {
     if (!user) {
       return this.responseService.clientError(res, 'Invalid credentials');
     }
-    if (!user.isVerified) {
-      return this.responseService.clientError(
-        res,
-        'You had started the registration process already. ' +
-          'Please check your email to complete your registration.',
-      );
-    }
+    // if (!user.isVerified) {
+    //   return this.responseService.clientError(
+    //     res,
+    //     'You had started the registration process already. ' +
+    //       'Please check your email to complete your registration.',
+    //   );
+    // }
     const isMatch = await bcrypt.compare(
       suppliedDetails.password,
       user.password,

@@ -40,7 +40,7 @@ export class ClientsService {
   }
 
   async findAll(): Promise<Client[]> {
-    return await this.clientModel.find();
+    return await this.clientModel.find({}, { password: 0 });
   }
   async findOneByEmail(email): Promise<Client> {
     return await this.clientModel.findOne({ email });
