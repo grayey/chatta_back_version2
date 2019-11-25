@@ -1,4 +1,12 @@
 import { Module } from '@nestjs/common';
+
+
+
+
+
+import { ClientSchema } from './schemas/client.schema';
+
+
 import { ClientController } from './client.controller';
 import { ClientsService } from './client.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -6,6 +14,7 @@ import { clientsSchema } from './schemas/client.schema';
 import { SendGridModule } from '@anchan828/nest-sendgrid';
 import { EmailService } from '../services/Email/email.service';
 import { ResponseService } from '../services/ResponseHandler/response-handler.service';
+
 
 @Module({
   imports: [
@@ -15,7 +24,8 @@ import { ResponseService } from '../services/ResponseHandler/response-handler.se
     }),
   ],
   controllers: [ClientController],
-  providers: [ClientsService, EmailService, ResponseService],
+  providers: [EmailService,ClientsService, ResponseService],
   exports: [ClientsService],
 })
+
 export class ClientsModule {}
