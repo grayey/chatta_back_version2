@@ -7,7 +7,7 @@ import { Module } from '@nestjs/common';
 // import { GraphQLModule } from '@nestjs/graphql';
 
 import config from './config/keys';
-import { ClientSchema } from './client/schemas/client.schema';
+// import { ClientSchema } from './client/schemas/client.schema';
 // import { SettingController } from './modules/setting/setting.controller';
 // import { SettingService } from './modules/setting/setting.service';
 // import { SettingSchema } from './modules/setting/schemas/setting.schema';
@@ -33,6 +33,9 @@ import { ResponseService } from './services/ResponseHandler/response-handler.ser
 
 import { CompaniesModule } from './companies/companies.module';
 
+import { CompaniesController } from './companies/companies.controller';
+import { CompaniesService } from './companies/companies.service';
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -44,10 +47,10 @@ import { CompaniesModule } from './companies/companies.module';
     SettingsModule,
     ConversationsModule,
     TreesModule,
-    MongooseModule.forRoot(process.env.DB_URL),
     CompaniesModule,
+    MongooseModule.forRoot(process.env.DB_URL),
   ],
-  controllers: [ClientController, SettingController],
+  controllers: [ClientController, SettingController, CompaniesController],
   providers: [
     ClientsService,
     SettingService,
