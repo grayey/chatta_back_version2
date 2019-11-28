@@ -17,7 +17,6 @@ import { AppService } from './app.service';
 import { ClientsModule } from './client/client.module';
 import { SettingsModule } from './modules/setting/setting.module';
 import { ConversationsModule } from './modules/conversations/conversations.module';
-import { TreesModule } from './modules/trees/trees.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { QueryService } from './services/query/query.service';
 import { AuthModule } from './auth/auth.module';
@@ -36,23 +35,28 @@ import { CompaniesModule } from './companies/companies.module';
 import { CompaniesController } from './companies/companies.controller';
 import { CompaniesService } from './companies/companies.service';
 
+import { TreeModule } from './tree/tree.module';
+import { TreeService } from './tree/tree.service';
+import { treeSchema } from './tree/schemas/tree.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Client', schema: clientsSchema },
       { name: 'Setting', schema: SettingSchema },
+      { name: 'Tree', schema: treeSchema },
     ]),
     ClientsModule,
+    TreeModule,
     AuthModule,
     SettingsModule,
     ConversationsModule,
-    TreesModule,
     CompaniesModule,
     MongooseModule.forRoot(process.env.DB_URL),
   ],
   controllers: [ClientController, SettingController, CompaniesController],
   providers: [
     ClientsService,
+    TreeService,
     SettingService,
     QueryService,
     EmailService,
