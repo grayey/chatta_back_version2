@@ -41,6 +41,7 @@ export class ResponseService {
    * @returns {object} res - HTTP response object
    */
   async requestSuccessful(res, payload, status = 200) {
+    console.log(payload);
     return res.status(status).json({ data: payload });
   }
 }

@@ -39,9 +39,32 @@ export class ClientsService {
     return re.test(String(email).toLowerCase());
   }
 
+
   async findAll(): Promise<Client[]> {
-    return await this.clientModel.find();
+    return await this.clientModel.find({}, { password: 0 });
   }
+
+
+
+
+  async findOne(id: string): Promise<Client> {
+    return await this.clientModel.findOne({ _id: id });
+  }
+
+  async create(client: Client): Promise<Client> {
+    const newClient = new this.clientModel(client);
+    return await newClient.save();
+  }
+
+  async delete(id: string): Promise<Client> {
+    return await this.clientModel.findByIdAndRemove(id);
+  }
+
+  async update(id: string, client: Client): Promise<Client> {
+      return await this.clientModel.findByIdAndUpdate(id, client, {new: true});
+  }
+
+
   async findOneByEmail(email): Promise<Client> {
     return await this.clientModel.findOne({ email });
   }
@@ -131,30 +154,36 @@ export class ClientsService {
     } catch (e) {
       return this.responseService.serverError(res, e.message);
     }
+
   }
 
-  async findOne(id: string): Promise<Client> {
-    return await this.clientModel.findOne({ _id: id });
+    async findByIdAndToggleEnable(id: string): Promise<Client> {
+        return await this.clientModel.findOne({ _id: id }, (err, clientModel) => {
+            clientModel.isEnabled = !clientModel.isEnabled;
+            clientModel.save((err, updatedClient) => {
+                return updatedClient;
+            });
+        });
+    }
+
+
   }
 
-  async create(client: Client): Promise<Client> {
-    const newClient = new this.clientModel(client);
-    return await newClient.save();
-  }
+  // async findOne(id: string): Promise<Client> {
+  //   return await this.clientModel.findOne({ _id: id });
+  // }
+  //
+  // async create(client: Client): Promise<Client> {
+  //   const newClient = new this.clientModel(client);
+  //   return await newClient.save();
+  // }
+  //
+  // async delete(id: string): Promise<Client> {
+  //   return await this.clientModel.findByIdAndRemove(id);
+  // }
+  //
+  // async update(id: string, client: Client): Promise<Client> {
+  //   return await this.clientModel.findByIdAndUpdate(id, client, { new: true });
+  // }
 
-  async delete(id: string): Promise<Client> {
-    return await this.clientModel.findByIdAndRemove(id);
-  }
-
-  async update(id: string, client: Client): Promise<Client> {
-    return await this.clientModel.findByIdAndUpdate(id, client, { new: true });
-  }
-  async findByIdAndToggleEnable(id: string): Promise<Client> {
-    return await this.clientModel.findOne({ _id: id }, (err, clientModel) => {
-      clientModel.isEnabled = !clientModel.isEnabled;
-      clientModel.save((err, updatedClient) => {
-        return updatedClient;
-      });
-    });
-  }
-}
+// }

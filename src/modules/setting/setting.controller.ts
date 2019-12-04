@@ -17,6 +17,7 @@ export class SettingController {
 
   @Get()
   findAll(): Promise<Setting[]> {
+    console.log("Setting Called")
     return this.settingService.findAll();
   }
 
