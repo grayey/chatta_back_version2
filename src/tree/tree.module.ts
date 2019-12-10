@@ -6,9 +6,7 @@ import { treeSchema } from './schemas/tree.schema';
 import { ResponseService } from '../services/ResponseHandler/response-handler.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: 'Tree', schema: treeSchema }]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: 'Tree', schema: treeSchema }])],
   controllers: [TreeController],
   providers: [TreeService, ResponseService],
 })

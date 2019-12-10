@@ -36,4 +36,13 @@ export class TreeController {
   async findAllTrees(): Promise<Tree[]> {
     return this.treeService.findAllTrees();
   }
+  @Patch(':id')
+  async deleteTree(
+    @Param('id') id,
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() treeDTO: CreateTreeDto
+  ): Promise<Tree[]> {
+    return this.treeService.updateTree(id,treeDTO, req, res);
+  }
 }

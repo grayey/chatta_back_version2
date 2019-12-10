@@ -6,7 +6,10 @@ import {
   Delete,
   Body,
   Param,
+  Res,
+  Req,
 } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { CreateSettingDto } from './dto/create-setting.dto';
 import { SettingService } from './setting.service';
 import { Setting } from './interfaces/setting.interface';
@@ -17,13 +20,17 @@ export class SettingController {
 
   @Get()
   findAll(): Promise<Setting[]> {
-    console.log("Setting Called")
+    console.log('Setting Called');
     return this.settingService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id): Promise<Setting> {
-    return this.settingService.findOne(id);
+  findOne(
+    @Param('id') id,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<Setting> {
+    return this.settingService.findOne(id, req, res);
   }
 
   @Post()
@@ -32,15 +39,21 @@ export class SettingController {
   }
 
   @Delete(':id')
-  delete(@Param('id') id): Promise<Setting> {
-    return this.settingService.delete(id);
+  delete(
+    @Param('id') id,
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<Setting> {
+    return this.settingService.delete(id, req, res);
   }
 
   @Put(':id')
   update(
     @Body() updateSettingDto: CreateSettingDto,
     @Param('id') id,
+    @Req() req: Request,
+    @Res() res: Response,
   ): Promise<Setting> {
-    return this.settingService.update(id, updateSettingDto);
+    return this.settingService.update(id, updateSettingDto, req, res);
   }
 }
