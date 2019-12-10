@@ -1,9 +1,9 @@
 import { Schema } from 'mongoose';
 
 export const treeSchema = new Schema({
-  company_id: {
-    type: { type: Schema.Types.ObjectId, ref: 'User' },
-  },
+  company_id: { type: Schema.Types.ObjectId, ref: 'User' },
+  setting_id: { type: Schema.Types.ObjectId, ref: 'Setting' },
+
   chat_body: {
     type: Array,
     required: true,

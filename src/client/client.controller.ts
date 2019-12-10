@@ -33,10 +33,10 @@ export class ClientController {
     return this.clientService.findOne(id);
   }
 
-  //   @Post()
-  //   create(@Body() createClientDto): Promise<Client> {
-  //     return this.clientService.create(createClientDto);
-  //   }
+  @Post('/new')
+  create(@Body() createClientDto): Promise<Client> {
+    return this.clientService.create(createClientDto);
+  }
 
   @Delete(':id')
   delete(@Param('id') id): Promise<Client> {
