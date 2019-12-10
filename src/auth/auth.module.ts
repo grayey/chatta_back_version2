@@ -16,4 +16,4 @@ import { ResponseService } from '../services/ResponseHandler/response-handler.se
   controllers: [AuthController],
   providers: [TokenService, AuthService, JwtStrategy, ResponseService],
 })
-export class AuthModule {}
+export class AuthModule { }

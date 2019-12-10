@@ -63,4 +63,4 @@ import { treeSchema } from './tree/schemas/tree.schema';
     ResponseService,
   ],
 })
-export class AppModule {}
+export class AppModule { }

@@ -15,7 +15,7 @@ console.log(baseUrl);
  */
 @Injectable()
 export class EmailService {
-  constructor(private sendGrid: SendGridService) {}
+  constructor(private sendGrid: SendGridService) { }
   /**
    * @param {string} email - email address to send the message to
    * @param {string} firstName - User's first name
