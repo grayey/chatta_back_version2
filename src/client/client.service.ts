@@ -47,8 +47,16 @@ export class ClientsService {
     return await this.clientModel.findOne({ _id: id });
   }
 
-  async create(client: Client): Promise<Client> {
+  async create(client: Client) {
     const newClient = new this.clientModel(client);
+    const errorResult = {
+      message: `A User with ${client.email} already exist`,
+    };
+    const result = await this.clientModel.findOne({ email: client.email });
+
+    if (result) {
+      return errorResult;
+    }
     return await newClient.save();
   }
 

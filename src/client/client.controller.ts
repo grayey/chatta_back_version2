@@ -34,7 +34,10 @@ export class ClientController {
   }
 
   @Post('/newclient')
-  create(@Body() createClientDto): Promise<Client> {
+  create(
+    @Body() createClientDto,
+    @Body('email') clientEmail: string,
+  ): Promise<Client> {
     return this.clientService.create(createClientDto);
   }
 
