@@ -47,4 +47,4 @@ import { TreeService } from './tree/tree.service';
     ResponseService,
   ],
 })
-export class AppModule {}
+export class AppModule { }
