@@ -40,6 +40,7 @@ export class AuthService {
     }
     return await this.responseService.clientError(res, 'Invalid credentials');
   }
+  
   async verifyUserEmail(token, req, res) {
     const userPayLoad = await TokenService.checkToken(token);
     console.log(userPayLoad);

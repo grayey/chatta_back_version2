@@ -44,7 +44,7 @@ export class EmailService {
               <button style="color: white; background-color: #2084ba;
                border: none; border-radius: 10px; text-align: center;
                 padding: 10px;">
-                <a  href="https://chattang.herokuapp.com/auth/verify_email?token=${token}"
+                <a  href="http://localhost:3000/auth/verify_email?token=${token}"
                  style="text-decoration: none;
                  color: white;">Verify Account</a></button>
             </div>

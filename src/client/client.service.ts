@@ -66,7 +66,7 @@ export class ClientsService {
   async verifyEmail(email, req, res): Promise<any> {
     const foundUser = await this.clientModel.findOne({ email });
     if (foundUser && foundUser.isVerified) {
-      res.redirect(`${this.BASE_URL}/dashboard/user`);
+      res.redirect(`${this.BASE_URL}/dashboard/admin`);
       return await this.responseService.requestSuccessful(res, {
         success: true,
         message: 'User is already verified',
@@ -87,7 +87,7 @@ export class ClientsService {
             fullName: foundUser.fullName,
             id: foundUser.id,
           });
-          res.redirect(`${this.BASE_URL}/dashboard/user`);
+          res.redirect(`${this.BASE_URL}/dashboard/admin`);
           return this.responseService.requestSuccessful(res, {
             success: true,
             message: `User ${foundUser.fullName} created successfully`,
