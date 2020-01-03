@@ -20,7 +20,10 @@ export class AuthService {
       );
     }
     const user = await this.clientService.findOneByEmail(suppliedDetails.email);
-    if (!user) {
+    if (!user.isEnabled) {
+      return await this.responseService.clientError(res, "You are currently disabled, please contact Administrator")
+    }
+    else if (!user) {
       return this.responseService.clientError(res, 'Invalid credentials');
     }
     // if (!user.isVerified) {
@@ -38,9 +41,11 @@ export class AuthService {
     if (userIsValid) {
       return userIsValid;
     }
-    return await this.responseService.clientError(res, 'Invalid credentials');
+    else if (!userIsValid) {
+      return await this.responseService.clientError(res, 'Invalid credentials');
+    }
   }
-  
+
   async verifyUserEmail(token, req, res) {
     const userPayLoad = await TokenService.checkToken(token);
     console.log(userPayLoad);
@@ -83,12 +88,14 @@ export class AuthService {
         fullName: user.fullName,
         isAdmin: user.isAdmin,
         email: user.email,
+
       });
       if (tokenCreated) {
         const userDetails = {
           id: user.id,
           fullName: user.fullName,
           token: tokenCreated,
+          role: user.role,
         };
         return this.responseService.requestSuccessful(
           res,
