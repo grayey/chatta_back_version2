@@ -22,6 +22,7 @@ export class AuthController {
     }
     return {};
   }
+  
   @Post()
   async login(
     @Body() loginUserDto: LoginUserDto,
