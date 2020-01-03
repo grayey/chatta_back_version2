@@ -22,6 +22,7 @@ export class ClientsService {
         email: userExist.email,
         id: userExist.id,
         fullName: userExist.fullName,
+        role: userExist.role
       },
       '1h',
     );
@@ -102,6 +103,7 @@ export class ClientsService {
   }
   async signUp(client: Client, req, res): Promise<Client> {
     console.log('called signup');
+    console.log('Reqeust:', req.body)
     if (!(await this.validateEmail(client.email))) {
       return this.responseService.clientError(
         res,
@@ -134,6 +136,9 @@ export class ClientsService {
       client.password = await bcrypt.hash(client.password, 6);
       const user = new this.clientModel(client);
       const userCreated = await user.save();
+      if (req.body.isCreated) {
+        return this.responseService.requestSuccessful(res, user)
+      }
       const isEmailSent = await this.createTokenAndSendEmail(userCreated);
       if (isEmailSent) {
         return this.responseService.requestSuccessful(res, {

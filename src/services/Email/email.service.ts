@@ -22,7 +22,8 @@ export class EmailService {
    * @param {string} token - Token generated during signup
    * @returns {boolean} specifies if the email was sent successfully
    */
-  async verifyEmail(email, firstName, token) {
+
+  async verifyEmail(email, firstName, token, ) {
     const details = {
       email,
       subject: 'Email Verification - Chatta',
@@ -114,6 +115,7 @@ export class EmailService {
    * @returns {boolean} sends email to users
    */
   async emailSender(details) {
+    console.log('emailsender:')
     const msg = {
       from: process.env.mail_master,
       html: details.html,
