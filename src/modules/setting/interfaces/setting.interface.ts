@@ -9,4 +9,5 @@ export interface Setting {
   primaryColor: string;
   secondaryColor: string;
   delayTime: number;
+  templateSettings: object
 }
