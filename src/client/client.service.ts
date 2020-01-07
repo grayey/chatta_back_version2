@@ -15,7 +15,7 @@ export class ClientsService {
     @InjectModel('Client') private clientModel: Model<Client>,
     private emailService: EmailService,
     private responseService: ResponseService,
-  ) {}
+  ) { }
   async createTokenAndSendEmail(userExist) {
     const tokenCreated = await TokenService.getToken(
       {
@@ -125,8 +125,8 @@ export class ClientsService {
             return this.responseService.clientError(
               res,
               'You had started the registration process earlier. ' +
-                'An email has been sent to your email address. ' +
-                'Please check your email to complete your registration.',
+              'An email has been sent to your email address. ' +
+              'Please check your email to complete your registration.',
             );
           }
           return this.responseService.clientError(

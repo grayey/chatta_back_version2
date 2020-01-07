@@ -11,7 +11,7 @@ export class AuthService {
   constructor(
     private clientService: ClientsService,
     private responseService: ResponseService,
-  ) {}
+  ) { }
   async validateUserPassword(suppliedDetails: LoginUserDto, req, res) {
     if (suppliedDetails.email === '' || suppliedDetails.password === '') {
       return this.responseService.clientError(

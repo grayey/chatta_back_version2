@@ -82,13 +82,11 @@ export class SettingService {
         },
       );
       if (updatedSettings) {
-        console.log('settings');
         const isFound = await this.treeModel.findOne({ setting_id: id });
         if (!isFound) {
           return this.responseService.clientError(res, 'Bot not found');
         }
         const { chat_body } = isFound;
-        console.log(chat_body[chat_body.length - 2]);
         chat_body[chat_body.length - 2].prompt = setting.fallbackMessage;
         chat_body[chat_body.length - 1].prompt = setting.delayPrompt;
         const updatedTree = await this.treeModel.updateOne(

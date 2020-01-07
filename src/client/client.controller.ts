@@ -21,7 +21,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('client')
 export class ClientController {
-  constructor(private readonly clientService: ClientsService) {}
+  constructor(private readonly clientService: ClientsService) { }
 
   @Get()
   findAll(): Promise<Client[]> {
