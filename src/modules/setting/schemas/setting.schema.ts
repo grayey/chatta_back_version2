@@ -10,5 +10,5 @@ export const SettingSchema = new mongoose.Schema({
   primaryColor: String,
   secondaryColor: String,
   delayTime: Number,
+  templateSettings: Object,
 });
-

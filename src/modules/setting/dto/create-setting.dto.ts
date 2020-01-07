@@ -8,4 +8,5 @@ export class CreateSettingDto {
   readonly primaryColor: string;
   readonly secondaryColor: string;
   readonly delayTime: number;
+  readonly templateSettings: object;
 }
