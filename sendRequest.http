@@ -1,0 +1,16 @@
+
+
+POST http://localhost:9000/client/new
+Content-Type: application/json
+
+{
+    "fullName": "Voke Olomu",
+    "role": "Admin",
+    "password": "password",
+    "email": "voke@email.com",
+    "phone": "090928888833"
+}
+
+###
+
+GET http://localhost:9000/client

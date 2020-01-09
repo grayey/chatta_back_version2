@@ -24,8 +24,8 @@ import { ResponseService } from '../services/ResponseHandler/response-handler.se
     }),
   ],
   controllers: [ClientController],
-  providers: [EmailService,ClientsService, ResponseService],
+  providers: [EmailService, ClientsService, ResponseService],
   exports: [ClientsService],
 })
 
-export class ClientsModule {}
+export class ClientsModule { }

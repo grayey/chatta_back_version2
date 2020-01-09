@@ -4,5 +4,7 @@ export class CreateClientDto {
   readonly phone: number;
   readonly password: string;
   readonly isAdmin: boolean;
+  readonly role: string;
   readonly isEnabled: boolean;
+  readonly isCreated: boolean;
 }

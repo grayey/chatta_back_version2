@@ -15,14 +15,15 @@ console.log(baseUrl);
  */
 @Injectable()
 export class EmailService {
-  constructor(private sendGrid: SendGridService) {}
+  constructor(private sendGrid: SendGridService) { }
   /**
    * @param {string} email - email address to send the message to
    * @param {string} firstName - User's first name
    * @param {string} token - Token generated during signup
    * @returns {boolean} specifies if the email was sent successfully
    */
-  async verifyEmail(email, firstName, token) {
+
+  async verifyEmail(email, firstName, token, ) {
     const details = {
       email,
       subject: 'Email Verification - Chatta',
@@ -44,7 +45,7 @@ export class EmailService {
               <button style="color: white; background-color: #2084ba;
                border: none; border-radius: 10px; text-align: center;
                 padding: 10px;">
-                <a  href="https://chattang.herokuapp.com/auth/verify_email?token=${token}"
+                <a  href="http://localhost:3000/auth/verify_email?token=${token}"
                  style="text-decoration: none;
                  color: white;">Verify Account</a></button>
             </div>
@@ -114,6 +115,7 @@ export class EmailService {
    * @returns {boolean} sends email to users
    */
   async emailSender(details) {
+    console.log('emailsender:')
     const msg = {
       from: process.env.mail_master,
       html: details.html,
