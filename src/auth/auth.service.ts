@@ -20,29 +20,34 @@ export class AuthService {
       );
     }
     const user = await this.clientService.findOneByEmail(suppliedDetails.email);
-    if (!user.isEnabled) {
-      return await this.responseService.clientError(res, "You are currently disabled, please contact Administrator")
+
+    if (user) {
+      // if (!user.isVerified) {
+      //   return this.responseService.clientError(
+      //     res,
+      //     'You had started the registration process already. ' +
+      //       'Please check your email to complete your registration.',
+      //   );
+      // }
+      const isMatch = await bcrypt.compare(
+        suppliedDetails.password,
+        user.password,
+      );
+      if (isMatch && !user.isEnabled) {
+        return await this.responseService.clientError(res, "You are currently disabled, please contact Administrator")
+      }
+      const userIsValid = await this.verifyUser(isMatch, user, res);
+     
+
+      if (userIsValid) {
+        return userIsValid;
+      } else {
+        return this.responseService.clientError(res, 'Invalid credentials');
+
+      }
     }
     else if (!user) {
       return this.responseService.clientError(res, 'Invalid credentials');
-    }
-    // if (!user.isVerified) {
-    //   return this.responseService.clientError(
-    //     res,
-    //     'You had started the registration process already. ' +
-    //       'Please check your email to complete your registration.',
-    //   );
-    // }
-    const isMatch = await bcrypt.compare(
-      suppliedDetails.password,
-      user.password,
-    );
-    const userIsValid = await this.verifyUser(isMatch, user, res);
-    if (userIsValid) {
-      return userIsValid;
-    }
-    else if (!userIsValid) {
-      return await this.responseService.clientError(res, 'Invalid credentials');
     }
   }
 
