@@ -18,6 +18,8 @@ import { ResponseService } from './services/ResponseHandler/response-handler.ser
 import { treeSchema } from './tree/schemas/tree.schema';
 import { TreeModule } from './tree/tree.module';
 import { TreeService } from './tree/tree.service';
+import { CompaniesService } from './companies/companies.service';
+import { CompaniesSchema } from './companies/companies.schema';
 
 
 
@@ -28,6 +30,7 @@ import { TreeService } from './tree/tree.service';
       { name: 'Client', schema: clientsSchema },
       { name: 'Setting', schema: SettingSchema },
       { name: 'Tree', schema: treeSchema },
+      {name: 'Companies', schema: CompaniesSchema}
     ]),
     ClientsModule,
     TreeModule,
@@ -45,6 +48,7 @@ import { TreeService } from './tree/tree.service';
     QueryService,
     EmailService,
     ResponseService,
+    CompaniesService,
   ],
 })
 export class AppModule { }
