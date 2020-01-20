@@ -22,18 +22,21 @@ import { CompaniesService } from './companies/companies.service';
 import { CompaniesSchema } from './companies/companies.schema';
 
 
-
-
+import { TemplateModule } from './template/template.module';
+import { TemplateService } from './template/template.service';
+import { templateSchema } from './template/schemas/template.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Client', schema: clientsSchema },
       { name: 'Setting', schema: SettingSchema },
       { name: 'Tree', schema: treeSchema },
+      {name: 'Template', schema: templateSchema},
       {name: 'Companies', schema: CompaniesSchema}
     ]),
     ClientsModule,
     TreeModule,
+    TemplateModule,
     AuthModule,
     SettingsModule,
     ConversationsModule,
@@ -44,6 +47,7 @@ import { CompaniesSchema } from './companies/companies.schema';
   providers: [
     ClientsService,
     TreeService,
+    TemplateService,
     SettingService,
     QueryService,
     EmailService,
