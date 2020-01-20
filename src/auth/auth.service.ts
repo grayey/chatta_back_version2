@@ -11,7 +11,7 @@ export class AuthService {
   constructor(
     private clientService: ClientsService,
     private responseService: ResponseService,
-  ) {}
+  ) { }
   async validateUserPassword(suppliedDetails: LoginUserDto, req, res) {
     if (suppliedDetails.email === '' || suppliedDetails.password === '') {
       return this.responseService.clientError(
@@ -20,26 +20,37 @@ export class AuthService {
       );
     }
     const user = await this.clientService.findOneByEmail(suppliedDetails.email);
-    if (!user) {
+
+    if (user) {
+      // if (!user.isVerified) {
+      //   return this.responseService.clientError(
+      //     res,
+      //     'You had started the registration process already. ' +
+      //       'Please check your email to complete your registration.',
+      //   );
+      // }
+      const isMatch = await bcrypt.compare(
+        suppliedDetails.password,
+        user.password,
+      );
+      if (isMatch && !user.isEnabled) {
+        return await this.responseService.clientError(res, "You are currently disabled, please contact Administrator")
+      }
+      const userIsValid = await this.verifyUser(isMatch, user, res);
+     
+
+      if (userIsValid) {
+        return userIsValid;
+      } else {
+        return this.responseService.clientError(res, 'Invalid credentials');
+
+      }
+    }
+    else if (!user) {
       return this.responseService.clientError(res, 'Invalid credentials');
     }
-    // if (!user.isVerified) {
-    //   return this.responseService.clientError(
-    //     res,
-    //     'You had started the registration process already. ' +
-    //       'Please check your email to complete your registration.',
-    //   );
-    // }
-    const isMatch = await bcrypt.compare(
-      suppliedDetails.password,
-      user.password,
-    );
-    const userIsValid = await this.verifyUser(isMatch, user, res);
-    if (userIsValid) {
-      return userIsValid;
-    }
-    return await this.responseService.clientError(res, 'Invalid credentials');
   }
+
   async verifyUserEmail(token, req, res) {
     const userPayLoad = await TokenService.checkToken(token);
     console.log(userPayLoad);
@@ -82,12 +93,14 @@ export class AuthService {
         fullName: user.fullName,
         isAdmin: user.isAdmin,
         email: user.email,
+
       });
       if (tokenCreated) {
         const userDetails = {
           id: user.id,
           fullName: user.fullName,
           token: tokenCreated,
+          role: user.role,
         };
         return this.responseService.requestSuccessful(
           res,

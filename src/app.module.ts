@@ -1,43 +1,26 @@
 import { Module } from '@nestjs/common';
-
-// import { ClientController } from './client/client.controller';
-// import { ClientsService } from './client/client.service';
-// import { ClientsModule } from './client/client.module';
-// import { SettingsModule } from './modules/settings/settings.module';
-// import { GraphQLModule } from '@nestjs/graphql';
-
-import config from './config/keys';
-// import { ClientSchema } from './client/schemas/client.schema';
-// import { SettingController } from './modules/setting/setting.controller';
-// import { SettingService } from './modules/setting/setting.service';
-// import { SettingSchema } from './modules/setting/schemas/setting.schema';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ClientsModule } from './client/client.module';
-import { SettingsModule } from './modules/setting/setting.module';
-import { ConversationsModule } from './modules/conversations/conversations.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { QueryService } from './services/query/query.service';
 import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
-import { SettingController } from './modules/setting/setting.controller';
-import { SettingService } from './modules/setting/setting.service';
-import { SettingSchema } from './modules/setting/schemas/setting.schema';
 import { ClientController } from './client/client.controller';
+import { ClientsModule } from './client/client.module';
 import { ClientsService } from './client/client.service';
 import { clientsSchema } from './client/schemas/client.schema';
-import { EmailService } from './services/Email/email.service';
-import { ResponseService } from './services/ResponseHandler/response-handler.service';
-
-import { CompaniesModule } from './companies/companies.module';
-
 import { CompaniesController } from './companies/companies.controller';
-import { CompaniesService } from './companies/companies.service';
-
+import { CompaniesModule } from './companies/companies.module';
+import { ConversationsModule } from './modules/conversations/conversations.module';
+import { SettingSchema } from './modules/setting/schemas/setting.schema';
+import { SettingController } from './modules/setting/setting.controller';
+import { SettingsModule } from './modules/setting/setting.module';
+import { SettingService } from './modules/setting/setting.service';
+import { EmailService } from './services/Email/email.service';
+import { QueryService } from './services/query/query.service';
+import { ResponseService } from './services/ResponseHandler/response-handler.service';
+import { treeSchema } from './tree/schemas/tree.schema';
 import { TreeModule } from './tree/tree.module';
 import { TreeService } from './tree/tree.service';
-import { treeSchema } from './tree/schemas/tree.schema';
+import { CompaniesService } from './companies/companies.service';
+import { CompaniesSchema } from './companies/companies.schema';
+
 
 import { TemplateModule } from './template/template.module';
 import { TemplateService } from './template/template.service';
@@ -48,7 +31,8 @@ import { templateSchema } from './template/schemas/template.schema';
       { name: 'Client', schema: clientsSchema },
       { name: 'Setting', schema: SettingSchema },
       { name: 'Tree', schema: treeSchema },
-      {name: 'Template', schema: templateSchema}
+      {name: 'Template', schema: templateSchema},
+      {name: 'Companies', schema: CompaniesSchema}
     ]),
     ClientsModule,
     TreeModule,
@@ -68,6 +52,7 @@ import { templateSchema } from './template/schemas/template.schema';
     QueryService,
     EmailService,
     ResponseService,
+    CompaniesService,
   ],
 })
-export class AppModule {}
+export class AppModule { }

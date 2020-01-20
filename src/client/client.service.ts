@@ -15,13 +15,14 @@ export class ClientsService {
     @InjectModel('Client') private clientModel: Model<Client>,
     private emailService: EmailService,
     private responseService: ResponseService,
-  ) {}
+  ) { }
   async createTokenAndSendEmail(userExist) {
     const tokenCreated = await TokenService.getToken(
       {
         email: userExist.email,
         id: userExist.id,
         fullName: userExist.fullName,
+        role: userExist.role
       },
       '1h',
     );
@@ -47,8 +48,16 @@ export class ClientsService {
     return await this.clientModel.findOne({ _id: id });
   }
 
-  async create(client: Client): Promise<Client> {
+  async create(client: Client) {
     const newClient = new this.clientModel(client);
+    const errorResult = {
+      message: `A User with ${client.email} already exist`,
+    };
+    const result = await this.clientModel.findOne({ email: client.email });
+
+    if (result) {
+      return errorResult;
+    }
     return await newClient.save();
   }
 
@@ -66,7 +75,7 @@ export class ClientsService {
   async verifyEmail(email, req, res): Promise<any> {
     const foundUser = await this.clientModel.findOne({ email });
     if (foundUser && foundUser.isVerified) {
-      res.redirect(`${this.BASE_URL}/dashboard/user`);
+      res.redirect(`${this.BASE_URL}/dashboard/admin`);
       return await this.responseService.requestSuccessful(res, {
         success: true,
         message: 'User is already verified',
@@ -87,7 +96,7 @@ export class ClientsService {
             fullName: foundUser.fullName,
             id: foundUser.id,
           });
-          res.redirect(`${this.BASE_URL}/dashboard/user`);
+          res.redirect(`${this.BASE_URL}/dashboard/admin`);
           return this.responseService.requestSuccessful(res, {
             success: true,
             message: `User ${foundUser.fullName} created successfully`,
@@ -102,6 +111,7 @@ export class ClientsService {
   }
   async signUp(client: Client, req, res): Promise<Client> {
     console.log('called signup');
+    console.log('Reqeust:', req.body)
     if (!(await this.validateEmail(client.email))) {
       return this.responseService.clientError(
         res,
@@ -117,8 +127,8 @@ export class ClientsService {
             return this.responseService.clientError(
               res,
               'You had started the registration process earlier. ' +
-                'An email has been sent to your email address. ' +
-                'Please check your email to complete your registration.',
+              'An email has been sent to your email address. ' +
+              'Please check your email to complete your registration.',
             );
           }
           return this.responseService.clientError(
@@ -134,6 +144,9 @@ export class ClientsService {
       client.password = await bcrypt.hash(client.password, 6);
       const user = new this.clientModel(client);
       const userCreated = await user.save();
+      if (req.body.isCreated) {
+        return this.responseService.requestSuccessful(res, user)
+      }
       const isEmailSent = await this.createTokenAndSendEmail(userCreated);
       if (isEmailSent) {
         return this.responseService.requestSuccessful(res, {

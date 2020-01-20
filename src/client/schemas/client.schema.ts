@@ -5,11 +5,12 @@ import * as mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
 export const ClientSchema = new mongoose.Schema({
-    full_name: String,
-    email: String,
-    phone: Number,
-    password: String,
-    isAdmin: Boolean,
+  full_name: String,
+  email: String,
+  phone: Number,
+  role: String,
+  password: String,
+  isAdmin: Boolean,
 })
 
 
@@ -32,6 +33,11 @@ export const clientsSchema = new Schema({
     min: 9,
     max: 15,
   },
+  role: {
+    type: String,
+    min: 5,
+    max: 20,
+  },
   password: {
     type: String,
     min: 8,
@@ -46,6 +52,10 @@ export const clientsSchema = new Schema({
     default: Date.now,
   },
   isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  isCreated: {
     type: Boolean,
     default: false,
   },

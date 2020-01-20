@@ -12,8 +12,11 @@ export interface Client extends Document {
   fullName: string;
   email: string;
   phone: number;
+  role: string;
   password: string;
   isVerified: boolean;
   date: Date;
   isAdmin: boolean;
+  isCreated: boolean;
+  isEnabled: boolean;
 }

@@ -1,0 +1,21 @@
+
+
+POST http://localhost:9000/client/new
+
+Content-Type: application/json
+
+{
+    "fullName": "Voke Olomu",
+    "role": "superadmin",
+    "password": "password1",
+    "email": "vokeolomu5@email.com",
+    "phone": "090928888833",
+    "isVerified": true,
+    "isCreated": true,
+    "isEnabled": true,
+    "isAdmin": true
+}
+
+
+###
+GET http://localhost:9000/client
