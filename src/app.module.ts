@@ -38,15 +38,21 @@ import { CompaniesService } from './companies/companies.service';
 import { TreeModule } from './tree/tree.module';
 import { TreeService } from './tree/tree.service';
 import { treeSchema } from './tree/schemas/tree.schema';
+
+import { TemplateModule } from './template/template.module';
+import { TemplateService } from './template/template.service';
+import { templateSchema } from './template/schemas/template.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Client', schema: clientsSchema },
       { name: 'Setting', schema: SettingSchema },
       { name: 'Tree', schema: treeSchema },
+      {name: 'Template', schema: templateSchema}
     ]),
     ClientsModule,
     TreeModule,
+    TemplateModule,
     AuthModule,
     SettingsModule,
     ConversationsModule,
@@ -57,6 +63,7 @@ import { treeSchema } from './tree/schemas/tree.schema';
   providers: [
     ClientsService,
     TreeService,
+    TemplateService,
     SettingService,
     QueryService,
     EmailService,
