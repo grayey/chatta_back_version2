@@ -22,18 +22,35 @@ import { CompaniesService } from './companies/companies.service';
 import { CompaniesSchema } from './companies/companies.schema';
 
 
+import { TemplateModule } from './template/template.module';
+import { TemplateService } from './template/template.service';
+import { templateSchema } from './template/schemas/template.schema';
+
+import {VisitorsModule} from './visitors/visitors.module'
+import {VisitorsService} from './visitors/visitors.service'
+import {VisitorsSchema} from './visitors/schemas/visitors.schema'
 
 
+import {ActiveusersModule} from './activeusers/activeusers.module'
+import {ActiveusersService} from './activeusers/activeusers.service'
+import {ActiveusersSchema} from './activeusers/schemas/activeusers.schema'
+import {AppGateway} from './app.gateway'
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Client', schema: clientsSchema },
       { name: 'Setting', schema: SettingSchema },
       { name: 'Tree', schema: treeSchema },
-      {name: 'Companies', schema: CompaniesSchema}
+      {name: 'Template', schema: templateSchema},
+      {name: 'Companies', schema: CompaniesSchema},
+      {name: 'Visitors', schema: VisitorsSchema},
+      {name: "Activeusers", schema: ActiveusersSchema}
     ]),
     ClientsModule,
     TreeModule,
+    TemplateModule,
+    VisitorsModule,
+    ActiveusersModule,
     AuthModule,
     SettingsModule,
     ConversationsModule,
@@ -42,13 +59,18 @@ import { CompaniesSchema } from './companies/companies.schema';
   ],
   controllers: [ClientController, SettingController, CompaniesController],
   providers: [
+    AppGateway,
     ClientsService,
     TreeService,
+    TemplateService,
+    VisitorsService,
+    ActiveusersService,
     SettingService,
     QueryService,
     EmailService,
     ResponseService,
     CompaniesService,
+    
   ],
 })
 export class AppModule { }
