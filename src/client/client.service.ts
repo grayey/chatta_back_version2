@@ -22,7 +22,8 @@ export class ClientsService {
         email: userExist.email,
         id: userExist.id,
         fullName: userExist.fullName,
-        role: userExist.role
+        role: userExist.role,
+        isRegistered: userExist.isRegistered,
       },
       '1h',
     );

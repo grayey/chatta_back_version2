@@ -9,5 +9,6 @@ export class CreateClientDto {
   readonly isAdmin: boolean;
   readonly isCreated?: boolean;
   readonly isEnabled: boolean;
+  readonly isRegistered?: boolean;
 
 }
