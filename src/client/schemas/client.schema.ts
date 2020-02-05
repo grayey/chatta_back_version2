@@ -13,10 +13,6 @@ export const ClientSchema = new mongoose.Schema({
   isAdmin: Boolean,
 })
 
-
-
-
-
 export const clientsSchema = new Schema({
   fullName: {
     type: String,
