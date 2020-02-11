@@ -32,7 +32,10 @@ export class ClientController {
   findOne(@Param('id') id): Promise<Client> {
     return this.clientService.findOne(id);
   }
-
+  @Get(':all/:clientId')
+  findAllByClient(@Param('clientId') clientId): Promise<Client> {
+    return this.clientService.findAllByClient(clientId);
+  }
   @Post('new')
   create(@Body() createClientDto): Promise<Client> {
     return this.clientService.create(createClientDto);

@@ -13,11 +13,8 @@ export const ClientSchema = new mongoose.Schema({
   isAdmin: Boolean,
 })
 
-
-
-
-
-export const clientsSchema = new Schema({
+export const clientsSchemas = new Schema({
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client' },
   fullName: {
     type: String,
     min: 5,

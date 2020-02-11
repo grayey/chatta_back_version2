@@ -10,7 +10,7 @@ import { ClientSchema } from './schemas/client.schema';
 import { ClientController } from './client.controller';
 import { ClientsService } from './client.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { clientsSchema } from './schemas/client.schema';
+import { clientsSchemas } from './schemas/client.schema';
 import { SendGridModule } from '@anchan828/nest-sendgrid';
 import { EmailService } from '../services/Email/email.service';
 import { ResponseService } from '../services/ResponseHandler/response-handler.service';
@@ -18,7 +18,7 @@ import { ResponseService } from '../services/ResponseHandler/response-handler.se
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Client', schema: clientsSchema }]),
+    MongooseModule.forFeature([{ name: 'Client', schema: clientsSchemas }]),
     SendGridModule.forRoot({
       apikey: process.env.SENDGRID_API_KEY,
     }),

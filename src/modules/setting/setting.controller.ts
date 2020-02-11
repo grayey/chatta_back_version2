@@ -18,9 +18,10 @@ import { Setting } from './interfaces/setting.interface';
 export class SettingController {
   constructor(private readonly settingService: SettingService) {}
 
-  @Get()
-  findAll(): Promise<Setting[]> {
-    return this.settingService.findAll();
+  @Get('all/:clientId')
+  findAll(@Param('clientId') clientId,): Promise<Setting[]> {
+    console.log("client")
+    return this.settingService.findAll(clientId);
   }
 
   @Get(':id')
