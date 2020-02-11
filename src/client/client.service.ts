@@ -47,7 +47,9 @@ export class ClientsService {
   async findOne(id: string): Promise<Client> {
     return await this.clientModel.findOne({ _id: id });
   }
-
+  async findAllByClient(clientId: string): Promise<Client> {
+    return await this.clientModel.find({ clientId});
+  }
   async create(client: Client) {
     const newClient = new this.clientModel(client);
     const errorResult = {
@@ -142,8 +144,10 @@ export class ClientsService {
         );
       }
       client.password = await bcrypt.hash(client.password, 6);
-      const user = new this.clientModel(client);
+      console.log("password", client)
+      const user = new this.clientModel(req.body);
       const userCreated = await user.save();
+      console.log("created", userCreated)
       if (req.body.isCreated) {
         return this.responseService.requestSuccessful(res, user)
       }

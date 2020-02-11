@@ -4,7 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ClientController } from './client/client.controller';
 import { ClientsModule } from './client/client.module';
 import { ClientsService } from './client/client.service';
-import { clientsSchema } from './client/schemas/client.schema';
+import { clientsSchemas } from './client/schemas/client.schema';
 import { CompaniesController } from './companies/companies.controller';
 import { CompaniesModule } from './companies/companies.module';
 import { ConversationsModule } from './modules/conversations/conversations.module';
@@ -25,18 +25,32 @@ import { CompaniesSchema } from './companies/companies.schema';
 import { TemplateModule } from './template/template.module';
 import { TemplateService } from './template/template.service';
 import { templateSchema } from './template/schemas/template.schema';
+
+import {VisitorsModule} from './visitors/visitors.module'
+import {VisitorsService} from './visitors/visitors.service'
+import {VisitorsSchema} from './visitors/schemas/visitors.schema'
+
+
+import {ActiveusersModule} from './activeusers/activeusers.module'
+import {ActiveusersService} from './activeusers/activeusers.service'
+import {ActiveusersSchema} from './activeusers/schemas/activeusers.schema'
+import {AppGateway} from './app.gateway'
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'Client', schema: clientsSchema },
+      { name: 'Client', schema: clientsSchemas },
       { name: 'Setting', schema: SettingSchema },
       { name: 'Tree', schema: treeSchema },
       {name: 'Template', schema: templateSchema},
-      {name: 'Companies', schema: CompaniesSchema}
+      {name: 'Companies', schema: CompaniesSchema},
+      {name: 'Visitors', schema: VisitorsSchema},
+      {name: "Activeusers", schema: ActiveusersSchema}
     ]),
     ClientsModule,
     TreeModule,
     TemplateModule,
+    VisitorsModule,
+    ActiveusersModule,
     AuthModule,
     SettingsModule,
     ConversationsModule,
@@ -45,14 +59,18 @@ import { templateSchema } from './template/schemas/template.schema';
   ],
   controllers: [ClientController, SettingController, CompaniesController],
   providers: [
+    AppGateway,
     ClientsService,
     TreeService,
     TemplateService,
+    VisitorsService,
+    ActiveusersService,
     SettingService,
     QueryService,
     EmailService,
     ResponseService,
     CompaniesService,
+    
   ],
 })
 export class AppModule { }

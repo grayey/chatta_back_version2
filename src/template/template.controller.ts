@@ -27,9 +27,9 @@ export class TemplateController {
   ): Promise<Template> {
     return this.templateService.createTemplate(CreateTemplateDto, res, req);
   }
-  @Get(':id')
-  findOne(@Param('id') id): Promise<Template> {
-    return this.templateService.findTemplate(id);
+  @Get(':clientId')
+  findAllById(@Param('clientId') clientId): Promise<Template> {
+    return this.templateService.findTemplate(clientId);
   }
   @Get()
   async findAllTemplate(): Promise<Template[]> {
