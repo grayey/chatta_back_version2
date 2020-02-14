@@ -42,12 +42,10 @@ export class EmailService {
               <p>Please verify that your email is <strong>${email}</strong>
                when you signed up.</p>
               <p>Click on the button below to verify.</p>
-              <button style="color: white; background-color: #2084ba;
-               border: none; border-radius: 10px; text-align: center;
-                padding: 10px;">
+              
                 <a  href="http://localhost:3000/auth/verify_email?token=${token}"
-                 style="text-decoration: none;
-                 color: white;">Verify Account</a></button>
+                 style="text-decoration: none; background-color: red; color: white; padding: 1em 1.5em; text-decoration: none;text-transform: uppercase;
+                 color: white;">Verify Account</a>
             </div>
             <div>
               <h3 style="text-align: center">Thank you</h3>

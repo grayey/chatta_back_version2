@@ -66,7 +66,7 @@ export class AppGateway
       userInfo['visitor']["time"] =  this.then
       console.log('USER INFO', userInfo['visitor']);
       axios
-        .post('http://localhost:9000/visitors', userInfo['visitor'])
+        .post('http://chattang.herokuapp.com/visitors', userInfo['visitor'])
         .then(res => {
           console.log(res);
         })
