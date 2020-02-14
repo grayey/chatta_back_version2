@@ -47,8 +47,8 @@ export class VisitorsService {
     const dateRange = dates.split("*")
     return await this.visitorsModel.find({
       created_at: {
-          $gte: new Date(dateRange[0]),
-          $lt: new Date(dateRange[1])
+          $gte: dateRange[0],
+          $lt: dateRange[1]
       }
   }).limit(dateRange[2]? parseInt(dateRange[2], 10): null);
   }
