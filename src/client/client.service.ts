@@ -120,6 +120,7 @@ export class ClientsService {
       );
     }
     const userExist = await this.clientModel.findOne({ email: client.email });
+    
     try {
       if (userExist) {
         if (!userExist.isVerified) {
@@ -141,6 +142,9 @@ export class ClientsService {
           res,
           'You are a registered user on this platform. Please proceed to login',
         );
+      }
+      if (req.body.isChecked) {
+        return this.responseService.requestSuccessful(res, "client successfully screened")
       }
       client.password = await bcrypt.hash(client.password, 6);
       const user = new this.clientModel(client);
