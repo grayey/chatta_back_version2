@@ -44,8 +44,8 @@ export class EmailService {
               <p>Click on the button below to verify.</p>
               
                 <a  href="http://localhost:3000/auth/verify_email?token=${token}"
-                 style="text-decoration: none; background-color: #2084ba; color: "white"; padding: 1em 1.5em; text-decoration: none;text-transform: uppercase;
-                 color: white;">Verify Account</a>
+                 style="text-decoration: none; background-color: #2084ba; color: "white"; padding: 1em 1.5em; text-decoration: none;text-transform: uppercase
+                 ">Verify Account</a>
             </div>
             <div>
               <h3 style="text-align: center">Thank you</h3>
