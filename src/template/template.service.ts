@@ -23,6 +23,7 @@ export class TemplateService {
     const newTemplate = new this.templateModel({
       templateName: exportedTemplate.templateName,
       template: exportedTemplate['template'],
+      clientId :exportedTemplate["clientId"]
     });
 
     try {
@@ -42,10 +43,11 @@ export class TemplateService {
       return this.responseService.serverError(res, e.message);
     }
   }
-  async findTemplate(id: string): Promise<Template> {
-    return await this.templateModel.findOne({ _id: id });
+  async findTemplate(clientId: string): Promise<Template> {
+    return await this.templateModel.find({ clientId });
   }
   async findAllTemplate(): Promise<Template[]> {
+    console.log("called fetch")
     return await this.templateModel.find();
   }
 }

@@ -4,7 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ClientController } from './client/client.controller';
 import { ClientsModule } from './client/client.module';
 import { ClientsService } from './client/client.service';
-import { clientsSchema } from './client/schemas/client.schema';
+import { clientsSchemas } from './client/schemas/client.schema';
 import { CompaniesController } from './companies/companies.controller';
 import { CompaniesModule } from './companies/companies.module';
 import { ConversationsModule } from './modules/conversations/conversations.module';
@@ -38,7 +38,7 @@ import {AppGateway} from './app.gateway'
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'Client', schema: clientsSchema },
+      { name: 'Client', schema: clientsSchemas },
       { name: 'Setting', schema: SettingSchema },
       { name: 'Tree', schema: treeSchema },
       {name: 'Template', schema: templateSchema},

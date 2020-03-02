@@ -22,21 +22,31 @@ export class AppGateway
       };
   users = [];
   then = '';
+  botId = ""
+  lead = {}
+  conversations = []
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('AppGateway');
 
   @SubscribeMessage('msgToServer')
   handleMessage(client: Socket, payload: object): void {
     const userInfo = payload;
+    console.log(userInfo)
     userInfo['clientId'] = client.id;
-    console.log(userInfo);
+    this.botId= payload["botId"]
+    this.lead = payload["lead"]
+    this.conversations = payload["conversations"]
     this.then = this.getDate();
     this.users.push(userInfo);
     setInterval(() => {
       this.server.emit('msgToClient', this.users);
     }, 5000);
   }
-
+@SubscribeMessage("updateConversation")
+updateConversation(client: Socket, payload: any) :void {
+  console.log(payload)
+this.conversations = payload
+}
   afterInit(server: Server) {
     this.logger.log('Init');
   }
@@ -52,7 +62,6 @@ export class AppGateway
         ),
       )
       .format('HH:mm:ss');
-      console.log(now, diff)
     let userInfo = {};
     this.users.filter((user, index) => {
       if (user.clientId === client.id) {
@@ -61,14 +70,14 @@ export class AppGateway
       }
     });
     if (userInfo['visitor']) {
-        console.log(userInfo)
       userInfo['visitor']["session"] = diff;
       userInfo['visitor']["time"] =  this.then
-      console.log('USER INFO', userInfo['visitor']);
+      userInfo['visitor']['lead'] = this.lead
+      userInfo['visitor']['conversations'] = this.conversations
       axios
-        .post('http://chattang.herokuapp.com/visitors', userInfo['visitor'])
+        .post('http://localhost:9000/visitors',{ visitors:userInfo['visitor'], botId: this.botId})
         .then(res => {
-          console.log(res);
+          console.log(res.data.data.visitors.conversations);
         })
         .catch(error => {
           console.log(error.message);
