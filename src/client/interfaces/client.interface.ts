@@ -9,6 +9,7 @@ import { Document } from 'mongoose';
 // }
 export interface Client extends Document {
   id?: string;
+  clientId: string,
   fullName: string;
   email: string;
   phone: number;

@@ -32,6 +32,10 @@ export class TreeController {
   findOne(@Param('id') id): Promise<Tree> {
     return this.treeService.findTree(id);
   }
+  @Get('all/:clientId')
+  findTreeByClient(@Param('clientId') clientId): Promise<Tree> {
+    return this.treeService.findTreeByClient(clientId);
+  }
   @Get()
   async findAllTrees(): Promise<Tree[]> {
     return this.treeService.findAllTrees();

@@ -27,16 +27,18 @@ export class VisitorsController {
   ): Promise<Visitors> {
     return this.visitorsService.createVisitors(CreateVisitorsDto, res, req);
   }
-  @Get(':date')
-  findVisitorsByRange(@Param('date') date): Promise<Visitors> {
-    return this.visitorsService.findVisitorsByRange(date);
+  @Get(':date/:botId')
+  findVisitorsByRange(@Param('date') date, @Param('botId') botId): Promise<Visitors> {
+    console.log("as well")
+    return this.visitorsService.findVisitorsByRange(date, botId);
   }
-  @Get('all/:limit')
-  async findAllVisitors(@Param('limit') limit): Promise<Visitors[]> {
-    return this.visitorsService.findAllVisitors(limit);
+  @Get('all/:limit/:botId')
+  async findAllVisitors(@Param('limit') limit, @Param('botId') botId): Promise<Visitors[]> {
+    return this.visitorsService.findAllVisitors(limit, botId);
   }
-  @Get()
-  async findAll(): Promise<Visitors[]> {
-    return this.visitorsService.findAll();
+  @Get(":botId")
+  async findAll(@Param('botId') botId): Promise<Visitors[]> {
+    console.log("calledd")
+    return this.visitorsService.findAll(botId);
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { Visitors } from './interfaces/visitors.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -21,7 +22,8 @@ export class VisitorsService {
     res,
   ): Promise<Visitors> {
     const newVisitors = new this.visitorsModel({
-      visitors: visits,
+      visitors: visits["visitors"],
+      botId: visits["botId"]
     });
 
     try {
@@ -43,9 +45,11 @@ export class VisitorsService {
   }
 
 
-  async findVisitorsByRange(dates: string): Promise<Visitors> {
+  async findVisitorsByRange(dates: string, botId: string): Promise<Visitors> {
     const dateRange = dates.split("*")
+    console.log("botId", botId)
     return await this.visitorsModel.find({
+      botId,
       created_at: {
           $gte: dateRange[0],
           $lt: dateRange[1]
@@ -53,10 +57,11 @@ export class VisitorsService {
   }).limit(dateRange[2]? parseInt(dateRange[2], 10): null);
   }
 
-  async findAllVisitors(limit: string): Promise<Visitors[]> {
-    return await this.visitorsModel.find().limit(parseInt(limit, 10));
+  async findAllVisitors(limit: string, botId): Promise<Visitors[]> {
+    return await this.visitorsModel.find({botId}).limit(parseInt(limit, 10));
   }
-  async findAll(): Promise<Visitors[]> {
-    return await this.visitorsModel.find();
+  async findAll(botId): Promise<Visitors[]> {
+    console.log(botId)
+    return await this.visitorsModel.find({botId});
   }
 }
