@@ -1,5 +1,6 @@
 export class CreateClientDto {
   readonly id?: string;
+  readonly clientId: string;
   readonly fullName: string;
   readonly email: string;
   readonly phone: number;

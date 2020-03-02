@@ -13,8 +13,9 @@ export class SettingService {
     private responseService: ResponseService,
   ) {}
 
-  async findAll(): Promise<Setting[]> {
-    return await this.settingModel.find();
+  async findAll(clientId): Promise<Setting[]> {
+    console.log("called")
+    return await this.settingModel.find({clientId});
   }
 
   async findOne(id: string, req, res): Promise<Setting> {

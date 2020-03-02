@@ -38,6 +38,9 @@ export class TreeService {
   async findTree(id: string): Promise<Tree> {
     return await this.treeModel.findOne({ _id: id });
   }
+  async findTreeByClient(clientId: string): Promise<Tree> {
+    return await this.treeModel.find({ clientId }).populate("setting_id");
+  }
   async findAllTrees(): Promise<Tree[]> {
     return await this.treeModel.find();
   }

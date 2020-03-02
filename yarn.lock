@@ -448,10 +448,10 @@
   dependencies:
     uuid "3.3.3"
 
-"@nestjs/websockets@^6.11.5":
-  version "6.11.5"
-  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-6.11.5.tgz#73d73f3c484589d8f7d6cc6af862f5bbf2ffb545"
-  integrity sha512-QSwTrOOgltKrAinidCUb4/mZZ0rSGILMTCsT8rjHPpkzDpOJHYNcMU2WsXl8lZyR3mgCV+l3CiboF30QQyMxZQ==
+"@nestjs/websockets@^6.11.8":
+  version "6.11.8"
+  resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-6.11.8.tgz#4c19fc55ef088097fe87b6af8959903b1ba55c60"
+  integrity sha512-tuoV/cd904ng8cBcG8No7/cseKWlEpV2nqnYZbZBvLk9CBPCIDpmT5gazcU0Bb38imSYoPN6FzwoRTLNNvOYJw==
   dependencies:
     iterare "1.2.0"
     tslib "1.10.0"
