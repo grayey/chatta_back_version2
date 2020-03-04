@@ -85,6 +85,25 @@ export class EmailService {
   }
 
   /**
+   * This function sends an email on verification of email address
+   * @param {string} email - email address to send the message to
+   * @param {string} token - Token generated during signup
+   * @returns {boolean} specifies if a verification email was sent to user
+   * after registration
+   */
+  async sendOfflineMail(payload) {
+    const details = {
+      email: payload.email,
+      subject: `${payload.botName} from ITHorizons`,
+      html: `<p>Hi dear<p>
+      <p>This is to test that delay email works</p>
+       <p> >>>
+       <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`,
+    };
+    return this.emailSender(details);
+  }
+
+  /**
    * This function sends an email to reset password
    * @param {string} email - email address to send the message to
    * @returns {boolean} specifies if a verification email was sent to user
