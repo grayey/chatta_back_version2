@@ -34,6 +34,9 @@ import {VisitorsSchema} from './visitors/schemas/visitors.schema'
 import {ActiveusersModule} from './activeusers/activeusers.module'
 import {ActiveusersService} from './activeusers/activeusers.service'
 import {ActiveusersSchema} from './activeusers/schemas/activeusers.schema'
+
+import {OfflineModule} from './offlineHandler/offline.module'
+import {OfflineService} from './offlineHandler/offline.service'
 import {AppGateway} from './app.gateway'
 @Module({
   imports: [
@@ -55,6 +58,7 @@ import {AppGateway} from './app.gateway'
     SettingsModule,
     ConversationsModule,
     CompaniesModule,
+    OfflineModule,
     MongooseModule.forRoot(process.env.DB_URL),
   ],
   controllers: [ClientController, SettingController, CompaniesController],
@@ -70,6 +74,7 @@ import {AppGateway} from './app.gateway'
     EmailService,
     ResponseService,
     CompaniesService,
+    OfflineService
     
   ],
 })

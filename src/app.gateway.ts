@@ -30,6 +30,7 @@ export class AppGateway
 
   @SubscribeMessage('msgToServer')
   handleMessage(client: Socket, payload: object): void {
+    console.log("message to server")
     const userInfo = payload;
     console.log(userInfo)
     userInfo['clientId'] = client.id;
@@ -44,8 +45,12 @@ export class AppGateway
   }
 @SubscribeMessage("updateConversation")
 updateConversation(client: Socket, payload: any) :void {
-  console.log(payload)
 this.conversations = payload
+}
+@SubscribeMessage("updateLeads")
+updateLeads(client: Socket, payload: any) :void {
+this.lead = payload
+console.log("LEADS", payload)
 }
   afterInit(server: Server) {
     this.logger.log('Init');
@@ -77,7 +82,7 @@ this.conversations = payload
       axios
         .post('http://localhost:9000/visitors',{ visitors:userInfo['visitor'], botId: this.botId})
         .then(res => {
-          console.log(res.data.data.visitors.conversations);
+          console.log("response",res.data.data.visitors.conversations);
         })
         .catch(error => {
           console.log(error.message);
