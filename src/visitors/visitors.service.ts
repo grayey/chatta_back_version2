@@ -17,7 +17,7 @@ export class VisitorsService {
   ) {}
 
   async createVisitors(
-    visits: Visitors,
+    visits: any,
     req,
     res,
   ): Promise<Visitors> {
