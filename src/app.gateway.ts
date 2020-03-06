@@ -6,15 +6,33 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
+import { ConfigService
+ } from '@nestjs/config';
+
+import {
+  Controller,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Patch,
+  Get,
+  Body,
+  UseGuards,
+  Res,
+  Req,
+} from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import axios from 'axios';
 import { setInterval } from 'timers';
 import * as moment from 'moment';
+import {VisitorsService} from './visitors/visitors.service'
 
 @WebSocketGateway()
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+    constructor(private readonly configService: ConfigService, private visitorsService: VisitorsService) {}
      getDate = () => {
         const time = new Date();
         return `${time.getMonth() +
@@ -30,7 +48,9 @@ export class AppGateway
 
   @SubscribeMessage('msgToServer')
   handleMessage(client: Socket, payload: object): void {
-    console.log("message to server")
+    const dbUser = this.configService.get<string>('port');
+    console.log("message to server", dbUser)
+
     const userInfo = payload;
     console.log(userInfo)
     userInfo['clientId'] = client.id;
@@ -76,11 +96,12 @@ console.log("LEADS", payload)
     });
     if (userInfo['visitor']) {
       userInfo['visitor']["session"] = diff;
-      userInfo['visitor']["time"] =  this.then
       userInfo['visitor']['lead'] = this.lead
       userInfo['visitor']['conversations'] = this.conversations
+      const payload = { visitors:userInfo['visitor'], botId: this.botId}
+      //  this.visitorsService.createVisitors(payload,Res,Req)
       axios
-        .post('http://localhost:9000/visitors',{ visitors:userInfo['visitor'], botId: this.botId})
+        .post('http://localhost:9000/visitors',payload)
         .then(res => {
           console.log("response",res.data.data.visitors.conversations);
         })

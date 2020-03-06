@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ClientController } from './client/client.controller';
 import { ClientsModule } from './client/client.module';
@@ -38,6 +39,13 @@ import {ActiveusersSchema} from './activeusers/schemas/activeusers.schema'
 import {OfflineModule} from './offlineHandler/offline.module'
 import {OfflineService} from './offlineHandler/offline.service'
 import {AppGateway} from './app.gateway'
+ const configuration = () => ({
+  port: parseInt(process.env.PORT, 10) || 9000,
+  database: {
+    host: process.env.DATABASE_HOST,
+    port: parseInt(process.env.DATABASE_PORT, 10) || 5432
+  }
+});
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -59,6 +67,7 @@ import {AppGateway} from './app.gateway'
     ConversationsModule,
     CompaniesModule,
     OfflineModule,
+    ConfigModule.forRoot({isGlobal:true, load:[configuration]}),
     MongooseModule.forRoot(process.env.DB_URL),
   ],
   controllers: [ClientController, SettingController, CompaniesController],
