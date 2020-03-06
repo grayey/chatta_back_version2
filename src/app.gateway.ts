@@ -99,15 +99,15 @@ console.log("LEADS", payload)
       userInfo['visitor']['lead'] = this.lead
       userInfo['visitor']['conversations'] = this.conversations
       const payload = { visitors:userInfo['visitor'], botId: this.botId}
-      //  this.visitorsService.createVisitors(payload,Res,Req)
-      axios
-        .post('http://localhost:9000/visitors',payload)
-        .then(res => {
-          console.log("response",res.data.data.visitors.conversations);
-        })
-        .catch(error => {
-          console.log(error.message);
-        });
+       this.visitorsService.createVisitors(payload,Res,Req)
+      // axios
+      //   .post('http://localhost:9000/visitors',payload)
+      //   .then(res => {
+      //     console.log("response",res.data.data.visitors.conversations);
+      //   })
+      //   .catch(error => {
+      //     console.log(error.message);
+      //   });
     }
   }
 
