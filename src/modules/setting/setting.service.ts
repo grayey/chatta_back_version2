@@ -4,7 +4,7 @@ import { Tree } from '../../tree/interfaces/tree.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ResponseService } from '../../services/ResponseHandler/response-handler.service';
-
+import * as mongoose from 'mongoose'
 @Injectable()
 export class SettingService {
   constructor(
@@ -14,11 +14,13 @@ export class SettingService {
   ) {}
 
   async findAll(clientId): Promise<Setting[]> {
-    console.log("called")
     return await this.settingModel.find({clientId});
   }
 
-  async findOne(id: string, req, res): Promise<Setting> {
+  async findOne(settingId: string, req, res): Promise<Setting> {
+    console.log("called", settingId)
+    const id = mongoose.Types.ObjectId(settingId);
+
     try {
       const findTree = await this.treeModel
         .findOne({ setting_id: id })
@@ -35,6 +37,8 @@ export class SettingService {
         'could not retrieve settings',
       );
     } catch (e) {
+      console.log("find all", e.message)
+
       return this.responseService.serverError(res, 'internal server error');
     }
   }
@@ -82,6 +86,7 @@ export class SettingService {
           new: true,
         },
       );
+
       if (updatedSettings) {
         const isFound = await this.treeModel.findOne({ setting_id: id });
         if (!isFound) {
@@ -104,6 +109,7 @@ export class SettingService {
           success: true,
           message: 'settings updated successfully',
           isFound,
+          updatedSettings
         });
       }
       return this.responseService.clientError(
