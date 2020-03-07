@@ -28,7 +28,7 @@ export class VisitorsService {
 
     try {
       const visitors = await newVisitors.save();
-      console.log("visitors", visitors)
+      console.log("visitorss", visitors)
 
       if (visitors) {
         return this.responseService.requestSuccessful(res, {

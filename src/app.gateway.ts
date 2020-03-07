@@ -81,6 +81,7 @@ console.log("LEADS", payload)
       userInfo['visitor']['lead'] = this.lead
       userInfo['visitor']['conversations'] = this.conversations
       this.visitorService.createVisitors({ visitors:userInfo['visitor'], botId: this.botId}, Res, Req)
+      
       // axios
       //   .post('http://localhost:9000/visitors',{ visitors:userInfo['visitor'], botId: this.botId})
       //   .then(res => {
