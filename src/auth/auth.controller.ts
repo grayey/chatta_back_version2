@@ -5,7 +5,7 @@ import { Response, Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
   @Get('/verify_email')
   async verifyEmail(
     @Query('token') token,
@@ -22,7 +22,7 @@ export class AuthController {
     }
     return {};
   }
-  
+
   @Post()
   async login(
     @Body() loginUserDto: LoginUserDto,

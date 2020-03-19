@@ -11,4 +11,6 @@ export const SettingSchema = new mongoose.Schema({
   secondaryColor: String,
   delayTime: Number,
   templateSettings: Object,
+  trainingMode: false,
+  trainingCode: String
 });

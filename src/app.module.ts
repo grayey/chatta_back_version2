@@ -36,6 +36,11 @@ import {ActiveusersModule} from './activeusers/activeusers.module'
 import {ActiveusersService} from './activeusers/activeusers.service'
 import {ActiveusersSchema} from './activeusers/schemas/activeusers.schema'
 
+import {TrainingModule} from './trainingData/training.module'
+import {TrainingService} from './trainingData/training.service'
+import {TrainingController} from './trainingData/training.controller'
+import {TrainingSchema} from './trainingData/schemas/training.schema'
+
 import {OfflineModule} from './offlineHandler/offline.module'
 import {OfflineService} from './offlineHandler/offline.service'
 import {AppGateway} from './app.gateway'
@@ -55,7 +60,9 @@ import {AppGateway} from './app.gateway'
       {name: 'Template', schema: templateSchema},
       {name: 'Companies', schema: CompaniesSchema},
       {name: 'Visitors', schema: VisitorsSchema},
-      {name: "Activeusers", schema: ActiveusersSchema}
+      {name: "Activeusers", schema: ActiveusersSchema},
+      {name: "Training", schema: TrainingSchema}
+
     ]),
     ClientsModule,
     TreeModule,
@@ -67,10 +74,11 @@ import {AppGateway} from './app.gateway'
     ConversationsModule,
     CompaniesModule,
     OfflineModule,
+    TrainingModule,
     ConfigModule.forRoot({isGlobal:true, load:[configuration]}),
     MongooseModule.forRoot(process.env.DB_URL),
   ],
-  controllers: [ClientController, SettingController, CompaniesController],
+  controllers: [ClientController, SettingController, CompaniesController, TrainingController],
   providers: [
     AppGateway,
     ClientsService,
@@ -83,7 +91,8 @@ import {AppGateway} from './app.gateway'
     EmailService,
     ResponseService,
     CompaniesService,
-    OfflineService
+    OfflineService,
+    TrainingService
     
   ],
 })
