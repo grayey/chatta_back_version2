@@ -21,7 +21,7 @@ import { TreeModule } from './tree/tree.module';
 import { TreeService } from './tree/tree.service';
 import { CompaniesService } from './companies/companies.service';
 import { CompaniesSchema } from './companies/companies.schema';
-
+import {PaymentModule} from './payment/payment.module';
 
 import { TemplateModule } from './template/template.module';
 import { TemplateService } from './template/template.service';
@@ -44,6 +44,9 @@ import {TrainingSchema} from './trainingData/schemas/training.schema'
 import {OfflineModule} from './offlineHandler/offline.module'
 import {OfflineService} from './offlineHandler/offline.service'
 import {AppGateway} from './app.gateway'
+import { PaymentService } from './payment/payment.service';
+import { PaymentController } from './payment/payment.controller';
+import { paymentSchemas } from './payment/schemas/payment.schema';
  const configuration = () => ({
   port: parseInt(process.env.PORT, 10) || 9000,
   database: {
@@ -61,7 +64,9 @@ import {AppGateway} from './app.gateway'
       {name: 'Companies', schema: CompaniesSchema},
       {name: 'Visitors', schema: VisitorsSchema},
       {name: "Activeusers", schema: ActiveusersSchema},
-      {name: "Training", schema: TrainingSchema}
+      {name: "Training", schema: TrainingSchema},
+      { name: "Payment", schema: paymentSchemas }
+
 
     ]),
     ClientsModule,
@@ -73,12 +78,13 @@ import {AppGateway} from './app.gateway'
     SettingsModule,
     ConversationsModule,
     CompaniesModule,
+    PaymentModule,
     OfflineModule,
     TrainingModule,
     ConfigModule.forRoot({isGlobal:true, load:[configuration]}),
     MongooseModule.forRoot(process.env.DB_URL),
   ],
-  controllers: [ClientController, SettingController, CompaniesController, TrainingController],
+  controllers: [ClientController, SettingController, CompaniesController, TrainingController, PaymentController],
   providers: [
     AppGateway,
     ClientsService,
@@ -92,7 +98,8 @@ import {AppGateway} from './app.gateway'
     ResponseService,
     CompaniesService,
     OfflineService,
-    TrainingService
+    TrainingService,
+    PaymentService
     
   ],
 })

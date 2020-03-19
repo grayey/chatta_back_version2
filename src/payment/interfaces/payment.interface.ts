@@ -5,5 +5,9 @@ export interface Payment extends Document {
    message: string;
    name: string;
    email: string;
-   amount: string;
+   amount: number;
+   status: string;
+   created_at: string;
+
+
 }

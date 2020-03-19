@@ -1,8 +1,20 @@
 
 
-POST http://localhost:9000/client/new
+GET http://localhost:9000/payment
 
 Content-Type: application/json
+{
+    "reference": "Voke Olomu",
+    "message": "superadmin",
+    "name": "password1",
+    "email": "vokeolomu5@email.com",
+    "amount": "090928888833",
+   
+}
+
+
+###
+GET http://localhost:9000/client
 
 {
     "fullName": "Voke Olomu",
@@ -15,7 +27,3 @@ Content-Type: application/json
     "isEnabled": true,
     "isAdmin": true
 }
-
-
-###
-GET http://localhost:9000/client

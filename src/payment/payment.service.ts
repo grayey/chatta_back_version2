@@ -7,34 +7,40 @@ import * as bcrypt from 'bcrypt';
 import { tsThisType } from '@babel/types';
 
 @Injectable()
-export class TreeService {
+export class PaymentService {
   protected BASE_URL = process.env.BASE_URL;
 
   constructor(
-    @InjectModel('Tree') private treeModel: Model<Payment>,
+    @InjectModel('Payment') private paymentModel: Model<Payment>,
     private responseService: ResponseService,
   ) {}
 
-  async createTree(tree: Payment, req, res): Promise<Payment> {
-    const newTree = new this.treeModel(tree);
+  async createPayment(payment: Payment) {
+    console.log(payment)
+    const newPayment = new this.paymentModel(payment);
 
     try {
-      const chat_body = await newTree.save();
-      if (chat_body) {
-        return this.responseService.requestSuccessful(res, {
+      const Pays = await newPayment.save();
+      if (Pays) {
+        return  {
           success: true,
-          message: 'Bot has been successfully deployed',
-          chat_body,
-        });
+          message: 'Payment has been successfully saved',
+          Pays
+        };
       }
-      return this.responseService.clientError(res, {
+      return  {
         success: false,
-        message: 'Bot could not be deployed. Please try again',
-      });
+        message: 'payment not saved. Please try again',
+      };
     } catch (e) {
-      return this.responseService.serverError(res, e.message);
+      return (e.message);
     }
   }
- 
+  async getPayments(): Promise<Payment[]> {
+    return await this.paymentModel.find();
+  }
+  async delete(id: string): Promise<Payment> {
+    return await this.paymentModel.findByIdAndRemove(id);
+  }
   
 }
