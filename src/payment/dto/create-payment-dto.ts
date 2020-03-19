@@ -4,5 +4,5 @@ export class CreatePaymentDto {
   readonly message: string;
   readonly name: string;
   readonly email: string;
-  readonly amount: string;
+  readonly amount: number;
 }

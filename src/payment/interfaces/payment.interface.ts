@@ -5,5 +5,5 @@ export interface Payment extends Document {
    message: string;
    name: string;
    email: string;
-   amount: string;
+   amount: number;
 }

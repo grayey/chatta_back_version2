@@ -12,21 +12,17 @@ import {
   Req,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { TreeService } from './payment.service';
-import { Tree } from '../tree/interfaces/tree.interface';
-import { CreatePaymentDto } from './dto/create-tree-dto';
-import { TreesService } from 'src/modules/trees/trees/trees.service';
-
-@Controller('tree')
-export class TreeController {
-  constructor(private treeService: TreeService) {}
+import { PaymentService } from './payment.service';
+import { Payment } from './interfaces/payment.interface';
+import { CreatePaymentDto } from './dto/create-payment-dto';
+@Controller('payment')
+export class PaymentController {
+  constructor(private paymentService: PaymentService) {}
   @Post()
-  async createTree(
-    @Body() createTreeDto: CreatePaymentDto,
-    @Req() res: Response,
-    @Res() req: Request,
-  ): Promise<Tree> {
-    return ;
-  }
+  createPayment(
+    @Body() createPaymentDto: CreatePaymentDto,
+  
+  ): Promise<Payment> {
+    return this.paymentService.createPayment(createPaymentDto);  }
   
 }
