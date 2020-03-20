@@ -1,8 +1,15 @@
 
 
 GET http://localhost:9000/payment
+###
+
+DELETE http://localhost:9000/payment/
+
+###
+POST http://localhost:9000/payment
 
 Content-Type: application/json
+
 {
     "reference": "Voke Olomu",
     "message": "superadmin",
@@ -11,7 +18,6 @@ Content-Type: application/json
     "amount": "090928888833",
    
 }
-
 
 ###
 GET http://localhost:9000/client

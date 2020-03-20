@@ -15,7 +15,6 @@ import { Response, Request } from 'express';
 import { PaymentService } from './payment.service';
 import { Payment } from './interfaces/payment.interface';
 import { CreatePaymentDto } from './dto/create-payment-dto';
-
 @Controller('payment')
 export class PaymentController {
   constructor(private paymentService: PaymentService) {}

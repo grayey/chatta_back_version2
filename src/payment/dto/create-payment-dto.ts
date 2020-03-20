@@ -1,5 +1,6 @@
 export class CreatePaymentDto {
   readonly id?: string;
+  readonly botId: string;
   readonly reference: string;
   readonly message: string;
   readonly name: string;
@@ -7,7 +8,4 @@ export class CreatePaymentDto {
   readonly amount: number;
   readonly status: string;
   readonly created_at: string;
-
-
-
 }
