@@ -1,6 +1,10 @@
 
 
+<<<<<<< HEAD
 GET http://localhost:9000/payment
+=======
+POST http://localhost:9000/payment
+>>>>>>> 3f26fcac86bbb464bc3a4d3e34a1d0b9ea46bf03
 
 Content-Type: application/json
 {
