@@ -161,7 +161,7 @@ export class AppGateway
             botId: this.botId,
           })
           .then(res => {
-            console.log('response', res.data.data.visitors);
+            console.log('response', res.data.data.visitors.keywordAnalytics);
           })
           .catch(error => {
             console.log(error.message);
