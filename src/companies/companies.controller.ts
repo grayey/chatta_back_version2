@@ -29,7 +29,7 @@ export class CompaniesController {
         return this.companyService.findOne(id);
     }
 
-    @Post('new')
+    @Post()
     create(@Body() createClientDto): Promise<CompaniesInterface> {
         return this.companyService.create(createClientDto);
     }

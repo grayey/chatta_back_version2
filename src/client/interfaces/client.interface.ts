@@ -20,4 +20,6 @@ export interface Client extends Document {
   isAdmin: boolean;
   isCreated: boolean;
   isEnabled: boolean;
+  isRegistered: boolean;
+  isChecked: boolean;
 }
