@@ -6,9 +6,8 @@ GET http://localhost:9000/payment
 DELETE http://localhost:9000/payment/
 
 ###
-POST http://localhost:9000/payment
-
-Content-Type: application/json
+POST http://localhost:9000/payment HTTP/1.1
+content-type: application/json
 
 {
     "reference": "Voke Olomu",
@@ -20,16 +19,21 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9000/client
+POST http://localhost:9000/client HTTP/1.1
+content-type: application/json
 
 {
     "fullName": "Voke Olomu",
     "role": "superadmin",
     "password": "password1",
-    "email": "vokeolomu5@email.com",
+    "email": "volomu@ithorizonsng.com",
     "phone": "090928888833",
     "isVerified": true,
-    "isCreated": true,
+    "isCreated": false,
     "isEnabled": true,
     "isAdmin": true
 }
+###
+
+GET http://localhost:9000/client HTTP/1.1
+content-type: application/json
