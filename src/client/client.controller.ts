@@ -51,6 +51,11 @@ export class ClientController {
     return this.clientService.update(id, updateClientDto);
   }
 
+  @Patch(':id')
+  findAndUpdate(@Body() clientItem, @Param('id') id): Promise<Client> {
+    return this.clientService.update(id, clientItem);
+  }
+
   @Post()
   async signUp(
     @Body() createClientDto,

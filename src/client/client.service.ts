@@ -72,6 +72,10 @@ export class ClientsService {
     return await this.clientModel.findByIdAndUpdate(id, client, { new: true });
   }
 
+  async findAndUpdate(id: string, patchItem): Promise<Client> {
+    return await this.clientModel.findByIdAndUpdate(id, patchItem);
+  }
+
   async findOneByEmail(email): Promise<Client> {
     return await this.clientModel.findOne({ email });
   }

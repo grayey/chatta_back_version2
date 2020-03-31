@@ -57,7 +57,7 @@ export const clientsSchemas = new Schema({
     default: false,
   },
   isEnabled: { type: Boolean, default: true }, 
-  isRegistered: { type: Boolean, default: false },
+  isRegistered: { type: Boolean, default: true },
   isChecked: { type: Boolean, default: false },
 
 });
