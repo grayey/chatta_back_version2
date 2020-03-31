@@ -7,7 +7,7 @@ import {
   Patch,
   Get,
   Body,
-  UseGuards,
+  Query,
   Res,
   Req,
 } from '@nestjs/common';
@@ -27,18 +27,31 @@ export class VisitorsController {
   ): Promise<Visitors> {
     return this.visitorsService.createVisitors(CreateVisitorsDto, res, req);
   }
-  @Get(':date/:botId')
-  findVisitorsByRange(@Param('date') date, @Param('botId') botId): Promise<Visitors> {
-    console.log("as well")
-    return this.visitorsService.findVisitorsByRange(date, botId);
+  @Get(':date/:botId/:type/:limit')
+  findVisitorsByRange(
+    @Param('date') date,
+    @Param('botId') botId,
+    @Param('type') type,
+    @Param('limit') limit,
+  ): Promise<Visitors> {
+    console.log('as well', botId);
+    return this.visitorsService.findVisitorsByRange(date, botId, type, limit);
   }
-  @Get('all/:limit/:botId')
-  async findAllVisitors(@Param('limit') limit, @Param('botId') botId): Promise<Visitors[]> {
+  @Get('/all')
+  async findAllVisitors(
+    @Query('limit') limit,
+    @Query('botId') botId,
+  ): Promise<Visitors[]> {
+    console.log('calledd', botId);
+
     return this.visitorsService.findAllVisitors(limit, botId);
   }
-  @Get(":botId")
+  @Get(':botId')
   async findAll(@Param('botId') botId): Promise<Visitors[]> {
-    console.log("calledd")
     return this.visitorsService.findAll(botId);
+  }
+  @Get()
+  async findAllVisits(@Param('botId') botId): Promise<Visitors[]> {
+    return this.visitorsService.findAllVisits();
   }
 }

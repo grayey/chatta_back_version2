@@ -10,8 +10,8 @@ export class OfflineService {
   constructor(
     private emailService: EmailService,
     private responseService: ResponseService,
-  ) { }
-  
+  ) {}
+
   async validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
@@ -25,19 +25,45 @@ export class OfflineService {
       );
     }
     try {
-      const sentEmail =  this.emailService.sendOfflineMail(payload)
+      const sentEmail = this.emailService.sendOfflineMail(payload);
       if (sentEmail) {
-        return this.responseService.requestSuccessful(res,{
+        return this.responseService.requestSuccessful(res, {
           success: true,
-          message:
-            'An email has been sent successfully ',
-        })
+          message: 'An email has been sent successfully ',
+        });
       }
-      
     } catch (e) {
       return this.responseService.serverError(res, e.message);
     }
   }
-
+  async sendRequestDemoMessage(payload: Offline, req, res): Promise<Offline> {
+    try {
+      const sentEmail = this.emailService.sendRequestDemoEmail(payload);
+      if (sentEmail) {
+        return this.responseService.requestSuccessful(res, {
+          success: true,
+          message: 'An email has been sent successfully ',
+        });
+      }
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
+  async sendScheduleMeetingMessage(
+    payload: Offline,
+    req,
+    res,
+  ): Promise<Offline> {
+    try {
+      const sentEmail = this.emailService.sendRequestScheduleEmail(payload);
+      if (sentEmail) {
+        return this.responseService.requestSuccessful(res, {
+          success: true,
+          message: 'An email has been sent successfully ',
+        });
+      }
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
 }
-

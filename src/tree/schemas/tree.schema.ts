@@ -1,7 +1,6 @@
 import { Schema } from 'mongoose';
 
 export const treeSchema = new Schema({
-  
   setting_id: { type: Schema.Types.ObjectId, ref: 'Setting' },
   clientId: { type: Schema.Types.ObjectId, ref: 'Client' },
 

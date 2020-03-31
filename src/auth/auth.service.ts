@@ -70,7 +70,7 @@ export class AuthService {
 
   async resetPassword(token, req, res) {
     const userPayLoad = await TokenService.checkToken(token);
-    console.log(userPayLoad)
+    console.log(userPayLoad);
 
     const verifiedUser = this.clientService.resetPassword(
       userPayLoad['email'],
@@ -83,7 +83,7 @@ export class AuthService {
         res,
         {
           success: true,
-          message: 'Password successfully reset. You can proceede to login',
+          message: 'Password successfully reset. You can proceed to login',
         },
         200,
       );

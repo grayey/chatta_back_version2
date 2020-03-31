@@ -15,7 +15,7 @@ console.log(baseUrl);
  */
 @Injectable()
 export class EmailService {
-  constructor(private sendGrid: SendGridService) { }
+  constructor(private sendGrid: SendGridService) {}
   /**
    * @param {string} email - email address to send the message to
    * @param {string} firstName - User's first name
@@ -23,7 +23,7 @@ export class EmailService {
    * @returns {boolean} specifies if the email was sent successfully
    */
 
-  async verifyEmail(email, firstName, token, ) {
+  async verifyEmail(email, firstName, token) {
     const details = {
       email,
       subject: 'Email Verification - Chatta',
@@ -60,7 +60,6 @@ export class EmailService {
     };
     return this.emailSender(details);
   }
-  
 
   /**
    * @param {string} notificationDetails - An object
@@ -88,7 +87,7 @@ export class EmailService {
   }
 
   /**
-   * This function sends an email on verification of email address
+   * This function sends an email when user is offline
    * @param {string} email - email address to send the message to
    * @param {string} token - Token generated during signup
    * @returns {boolean} specifies if a verification email was sent to user
@@ -98,8 +97,51 @@ export class EmailService {
     const details = {
       email: payload.email,
       subject: `${payload.botName} from ITHorizons`,
-      html: `<p>Hi dear<p>
+      html: `<p>Hi ${payload.name}<p>
       <p>This is to test that delay email works</p>
+       <p> >>>
+       <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`,
+    };
+    return this.emailSender(details);
+  }
+
+  /**
+   * This function sends an email on receiving request for demo
+   * @param {string} email - email address to send the message to
+   * @param {string} token - Token generated during signup
+   * @returns {boolean} specifies if a verification email was sent to user
+   * after registration
+   */
+  async sendRequestDemoEmail(payload) {
+    const details = {
+      email: payload.email,
+      subject: `${payload.botName} from ITHorizons`,
+      html: `<p>Hi ${payload.name}<p>
+      <p>We have received your request for a demo of our ${
+        payload.parentValue
+      } service. Please look out for an email from one of our agents on how to access the demo</p>
+       <p> >>>
+       <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`,
+    };
+    return this.emailSender(details);
+  }
+  /**
+   * This function sends an email on receiving request for a meeting
+   * @param {string} email - email address to send the message to
+   * @param {string} token - Token generated during signup
+   * @returns {boolean} specifies if a verification email was sent to user
+   * after registration
+   */
+  async sendRequestScheduleEmail(payload) {
+    const details = {
+      email: payload.email,
+      subject: `${payload.botName} from ITHorizons`,
+      html: `<p>Hi ${payload.name}<p>
+      <p>This is to notify you that you have scheduled a meeting on ${
+        payload.date
+      } concerning our  ${
+        payload.parentValue
+      } service. One of our agents will be in touch with you on the chosen date. Thank you</p>
        <p> >>>
        <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`,
     };
@@ -134,7 +176,7 @@ export class EmailService {
              <button style="color: white; background-color: #2084ba;
               border: none; border-radius: 10px; text-align: center;
                padding: 10px;">
-               <a  href="http://localhost:3000/auth/password-reset?token=${token}"
+               <a  href="https://mychatta-9b722.firebaseapp.com/auth/password-reset?token=${token}"
                 style="text-decoration: none;
                 color: white;">Reset Password</a></button>
            </div>
@@ -156,7 +198,7 @@ export class EmailService {
    * @returns {boolean} sends email to users
    */
   async emailSender(details) {
-    console.log('emailsender:')
+    console.log('emailsender:');
     const msg = {
       from: process.env.mail_master,
       html: details.html,
