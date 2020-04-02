@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose';
 
 export const CompaniesSchema = new Schema({
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client' },
   company_name: {
     type: String,
     max: 50,
@@ -18,6 +19,7 @@ export const CompaniesSchema = new Schema({
     type: String,
     max: 255,
   },
+  
   created_at: {
     type: Date,
     default: Date.now,

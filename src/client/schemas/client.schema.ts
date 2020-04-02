@@ -14,6 +14,7 @@ export const ClientSchema = new mongoose.Schema({
 })
 
 export const clientsSchemas = new Schema({
+  companyId: { type: Schema.Types.ObjectId, ref: 'Companies' },
   clientId: { type: Schema.Types.ObjectId, ref: 'Client' },
   fullName: {
     type: String,
@@ -57,7 +58,6 @@ export const clientsSchemas = new Schema({
     default: false,
   },
   isEnabled: { type: Boolean, default: true }, 
-  isRegistered: { type: Boolean, default: true },
   isChecked: { type: Boolean, default: false },
 
 });

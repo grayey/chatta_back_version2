@@ -9,6 +9,7 @@ import { Document } from 'mongoose';
 // }
 export interface Client extends Document {
   id?: string;
+  companyId: string;
   clientId: string,
   fullName: string;
   email: string;
@@ -20,6 +21,5 @@ export interface Client extends Document {
   isAdmin: boolean;
   isCreated: boolean;
   isEnabled: boolean;
-  isRegistered: boolean;
   isChecked: boolean;
 }

@@ -101,7 +101,7 @@ export class AuthService {
           fullName: user.fullName,
           token: tokenCreated,
           role: user.role,
-          isRegistered: user.isRegistered,
+          companyId: user.companyId
         };
         return this.responseService.requestSuccessful(
           res,

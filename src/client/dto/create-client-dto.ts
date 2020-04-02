@@ -1,6 +1,7 @@
 export class CreateClientDto {
   readonly id?: string;
   readonly clientId: string;
+  readonly companyId: string;
   readonly fullName: string;
   readonly email: string;
   readonly phone: number;
@@ -10,6 +11,5 @@ export class CreateClientDto {
   readonly isAdmin: boolean;
   readonly isCreated?: boolean;
   readonly isEnabled: boolean;
-  readonly isRegistered?: boolean;
 
 }

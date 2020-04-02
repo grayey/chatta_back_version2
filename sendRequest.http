@@ -1,9 +1,9 @@
 
 
-GET http://localhost:9000/payment
+GET http://localhost:9000/tree
 ###
 
-DELETE http://localhost:9000/payment/
+DELETE http://localhost:9000/client/5e861ea26c6e770017fb731d
 
 ###
 POST http://localhost:9000/payment HTTP/1.1
@@ -31,9 +31,10 @@ content-type: application/json
     "isVerified": true,
     "isCreated": false,
     "isEnabled": true,
-    "isAdmin": true
+    "isAdmin": true,
+    "companyId": null
 }
 ###
 
-GET https://agile-reef-92956.herokuapp.com/client HTTP/1.1
+GET http://localhost:9000/client HTTP/1.1
 content-type: application/json
