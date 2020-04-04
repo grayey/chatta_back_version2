@@ -1,6 +1,6 @@
 
 
-GET http://localhost:9000/tree
+GET http://localhost:9000/payment?botId=5e69fe8f145c2f001756a177
 ###
 
 DELETE http://localhost:9000/client/5e861ea26c6e770017fb731d

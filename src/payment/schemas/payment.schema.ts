@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 export const paymentSchemas = new Schema({
-  botId: { type: Schema.Types.ObjectId },
+  botId: { type: Schema.Types.ObjectId, ref: 'Payment' },
   reference: {
     type: String,
 

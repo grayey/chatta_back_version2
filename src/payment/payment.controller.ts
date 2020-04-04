@@ -7,6 +7,7 @@ import {
   Patch,
   Get,
   Body,
+  Query,
   UseGuards,
   Res,
   Req,
@@ -26,8 +27,8 @@ export class PaymentController {
     return this.paymentService.createPayment(createPaymentDto);  }
 
   @Get()
-  async findPayments(): Promise<Payment[]> {
-    return this.paymentService.getPayments();
+   findPayments(@Query('botId') botId): Promise<Payment[]> {
+    return this.paymentService.getPayments(botId);
   }
   @Delete(':id')
   delete(@Param('id') id): Promise<Payment> {
