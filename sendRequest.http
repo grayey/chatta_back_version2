@@ -6,8 +6,7 @@ GET http://localhost:9000/payment?botId=5e69fe8f145c2f001756a177
 DELETE http://localhost:9000/client/5e861ea26c6e770017fb731d
 
 ###
-POST http://localhost:9000/payment HTTP/1.1
-content-type: application/json
+POST http://localhost:9000/payment
 
 {
     "reference": "Voke Olomu",

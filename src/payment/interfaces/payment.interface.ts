@@ -9,4 +9,6 @@ export interface Payment extends Document {
    amount: number;
    status: string;
    created_at: string;
+
+
 }

@@ -8,4 +8,7 @@ export class CreatePaymentDto {
   readonly amount: number;
   readonly status: string;
   readonly created_at: string;
+
+
+
 }
