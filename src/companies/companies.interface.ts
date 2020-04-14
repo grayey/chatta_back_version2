@@ -5,6 +5,7 @@ export interface CompaniesInterface extends Document {
   company_name: string;
   domain_name: string;
   phone: number;
+  clientId: string;
   contact_address: string;
   created_at: Date;
 }

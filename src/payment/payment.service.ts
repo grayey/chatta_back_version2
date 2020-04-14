@@ -36,7 +36,12 @@ export class PaymentService {
       return (e.message);
     }
   }
-  async getPayments(): Promise<Payment[]> {
+  async getPayments(botId): Promise<Payment[]> {
+    if(botId){
+      console.log("i am called payment")
+      return await this.paymentModel.find({botId: botId});
+
+    }
     return await this.paymentModel.find();
   }
   async delete(id: string): Promise<Payment> {

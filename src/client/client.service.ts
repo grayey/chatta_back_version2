@@ -68,9 +68,18 @@ export class ClientsService {
     return await this.clientModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, client: Client): Promise<Client> {
+  async update(id: string, client: Client, companyId): Promise<Client> {
+    if(companyId){
+console.log("i am called", companyId)
+      return await this.clientModel.findByIdAndUpdate({_id: id}, {companyId: companyId}, {new: true});
+
+    }
     return await this.clientModel.findByIdAndUpdate(id, client, { new: true });
   }
+
+  // async findAndUpdate(id: string): Promise<Client> {
+  //   return await this.clientModel.findByIdAndUpdate();
+  // }
 
   async findOneByEmail(email): Promise<Client> {
     return await this.clientModel.findOne({ email });

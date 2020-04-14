@@ -3,5 +3,6 @@ export class CreateCompanyDto {
   readonly domain_name: string;
   readonly phone: number;
   readonly contact_address: string;
+  readonly clientId: string;
   readonly created_at: string;
 }
