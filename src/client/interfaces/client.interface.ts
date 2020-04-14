@@ -12,6 +12,7 @@ export interface Client extends Document {
   companyId: string;
   clientId: string,
   fullName: string;
+  paymentPlan: string;
   email: string;
   phone: number;
   role: string;

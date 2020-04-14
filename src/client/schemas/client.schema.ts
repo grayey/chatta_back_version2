@@ -36,6 +36,9 @@ export const clientsSchemas = new Schema({
     min: 5,
     max: 20,
   },
+  paymentPlan: {
+    type: String,
+  },
   password: {
     type: String,
     min: 8,
