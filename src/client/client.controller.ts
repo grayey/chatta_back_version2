@@ -10,6 +10,7 @@ import {
   Res,
   Param,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { ClientsService } from './client.service';
@@ -47,9 +48,15 @@ export class ClientController {
   }
 
   @Put(':id')
-  update(@Body() updateClientDto, @Param('id') id): Promise<Client> {
-    return this.clientService.update(id, updateClientDto);
+  update(@Body() updateClientDto, @Param('id') id, @Query('companyId') companyId): Promise<Client> {
+    console.log('companyId', companyId, id)
+    return this.clientService.update(id, updateClientDto, companyId);
   }
+
+  // @Put(':id')
+  // findAndUpdate(@Param('id') @Query('companyId') id): Promise<Client> {
+  //   return this.clientService.findAndUpdate(id);
+  // }
 
   @Post()
   async signUp(

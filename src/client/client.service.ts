@@ -22,7 +22,8 @@ export class ClientsService {
         email: userExist.email,
         id: userExist.id,
         fullName: userExist.fullName,
-        role: userExist.role
+        role: userExist.role,
+        isRegistered: userExist.isRegistered,
       },
       '1h',
     );
@@ -67,9 +68,18 @@ export class ClientsService {
     return await this.clientModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, client: Client): Promise<Client> {
+  async update(id: string, client: Client, companyId): Promise<Client> {
+    if(companyId){
+console.log("i am called", companyId)
+      return await this.clientModel.findByIdAndUpdate({_id: id}, {companyId: companyId}, {new: true});
+
+    }
     return await this.clientModel.findByIdAndUpdate(id, client, { new: true });
   }
+
+  // async findAndUpdate(id: string): Promise<Client> {
+  //   return await this.clientModel.findByIdAndUpdate();
+  // }
 
   async findOneByEmail(email): Promise<Client> {
     return await this.clientModel.findOne({ email });
@@ -121,6 +131,7 @@ export class ClientsService {
       );
     }
     const userExist = await this.clientModel.findOne({ email: client.email });
+    
     try {
       if (userExist) {
         if (!userExist.isVerified) {
@@ -142,6 +153,9 @@ export class ClientsService {
           res,
           'You are a registered user on this platform. Please proceed to login',
         );
+      }
+      if (req.body.isChecked) {
+        return this.responseService.requestSuccessful(res, "client successfully screened")
       }
       client.password = await bcrypt.hash(client.password, 6);
       console.log("password", client)

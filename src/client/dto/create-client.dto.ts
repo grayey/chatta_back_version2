@@ -7,4 +7,6 @@ export class CreateClientDto {
   readonly role: string;
   readonly isEnabled: boolean;
   readonly isCreated?: boolean;
+  readonly isRegistered?: boolean;
+  readonly isChecked?: boolean;
 }
