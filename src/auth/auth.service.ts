@@ -11,7 +11,7 @@ export class AuthService {
   constructor(
     private clientService: ClientsService,
     private responseService: ResponseService,
-  ) { }
+  ) {}
   async validateUserPassword(suppliedDetails: LoginUserDto, req, res) {
     if (suppliedDetails.email === '' || suppliedDetails.password === '') {
       return this.responseService.clientError(
@@ -34,19 +34,19 @@ export class AuthService {
         user.password,
       );
       if (isMatch && !user.isEnabled) {
-        return await this.responseService.clientError(res, "You are currently disabled, please contact Administrator")
+        return await this.responseService.clientError(
+          res,
+          'You are currently disabled, please contact Administrator',
+        );
       }
       const userIsValid = await this.verifyUser(isMatch, user, res);
-     
 
       if (userIsValid) {
         return userIsValid;
       } else {
         return this.responseService.clientError(res, 'Invalid credentials');
-
       }
-    }
-    else if (!user) {
+    } else if (!user) {
       return this.responseService.clientError(res, 'Invalid credentials');
     }
   }
@@ -65,6 +65,32 @@ export class AuthService {
     return await this.responseService.clientError(
       res,
       'Could not validate user',
+    );
+  }
+
+  async resetPassword(token, req, res) {
+    const userPayLoad = await TokenService.checkToken(token);
+    console.log(userPayLoad);
+
+    const verifiedUser = this.clientService.resetPassword(
+      userPayLoad['email'],
+      req.body.passwords,
+      req,
+      res,
+    );
+    if (verifiedUser && userPayLoad['success']) {
+      return this.responseService.requestSuccessful(
+        res,
+        {
+          success: true,
+          message: 'Password successfully reset. You can proceed to login',
+        },
+        200,
+      );
+    }
+    return await this.responseService.clientError(
+      res,
+      'Could not reset password',
     );
   }
   async validateUserByJwt(payload: JwtPayload) {
@@ -93,7 +119,6 @@ export class AuthService {
         fullName: user.fullName,
         isAdmin: user.isAdmin,
         email: user.email,
-
       });
       if (tokenCreated) {
         const userDetails = {

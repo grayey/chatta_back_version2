@@ -10,6 +10,9 @@ export const VisitorsSchema = new Schema({
     type: Object,
     required: true,
   },
+  created: {
+    type: String,
+  },
 
   created_at: {
     type: Date,

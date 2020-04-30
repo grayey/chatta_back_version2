@@ -22,7 +22,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('client')
 export class ClientController {
-  constructor(private readonly clientService: ClientsService) { }
+  constructor(private readonly clientService: ClientsService) {}
 
   @Get()
   findAll(): Promise<Client[]> {
@@ -65,6 +65,14 @@ export class ClientController {
     @Res() req: Request,
   ): Promise<Client> {
     return this.clientService.signUp(createClientDto, res, req);
+  }
+  @Post('reset-password')
+  async sendPasswordRecoveryEmail(
+    @Body() createClientDto,
+    @Req() res: Response,
+    @Res() req: Request,
+  ): Promise<Client> {
+    return this.clientService.recoverPassword(createClientDto, res, req);
   }
 
   @Get('test')

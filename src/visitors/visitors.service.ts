@@ -16,19 +16,17 @@ export class VisitorsService {
     private responseService: ResponseService,
   ) {}
 
-  async createVisitors(
-    visits: any,
-    req,
-    res,
-  ): Promise<Visitors> {
+  async createVisitors(visits: any, req, res): Promise<Visitors> {
+    console.log('it is createdd', visits['created']);
     const newVisitors = new this.visitorsModel({
-      visitors: visits["visitors"],
-      botId: visits["botId"]
+      visitors: visits['visitors'],
+      botId: visits['botId'],
+      created: visits['created'],
     });
 
     try {
       const visitors = await newVisitors.save();
-      console.log("visitorss", visitors)
+      console.log('visitorss', visitors);
 
       if (visitors) {
         return this.responseService.requestSuccessful(res, {
@@ -46,24 +44,62 @@ export class VisitorsService {
     }
   }
 
+  async findVisitorsByRange(
+    dates: string,
+    botId: string,
+    type: string,
+    limit:string
+  ): Promise<Visitors> {
+    const dateRange = dates.split('*');
+    console.log('botId', dateRange);
 
-  async findVisitorsByRange(dates: string, botId: string): Promise<Visitors> {
-    const dateRange = dates.split("*")
-    console.log("botId", botId)
-    return await this.visitorsModel.find({
-      botId,
-      created_at: {
-          $gte: dateRange[0],
-          $lt: dateRange[1]
-      }
-  }).limit(dateRange[2]? parseInt(dateRange[2], 10): null);
+    if (type === 'single') {
+      const time = new Date(dateRange[0]);
+      const created = `${time.getMonth() +
+        1}/${time.getDate()}/${time.getFullYear()}`;
+      const nkjn = await this.visitorsModel
+        .find({
+          botId: botId,
+          created,
+        })
+        .limit(dateRange[2] ? parseInt(dateRange[2], 10) : null);
+        console.log('time', nkjn);
+
+      return nkjn;
+    }
+    if (type === 'range') {
+      const time1 = new Date(dateRange[0]);
+      const time2 = new Date(dateRange[1]);
+      const dateRange1 = `${time1.getMonth() +
+        1}/${time1.getDate()}/${time1.getFullYear()}`;
+      const dateRange2 = `${time2.getMonth() +
+        1}/${time2.getDate()}/${time2.getFullYear()}`;
+      const visits = await this.visitorsModel
+        .find({
+          botId,
+          created_at: {
+            $gte: new Date(dateRange1),
+            $lt: new Date(dateRange2),
+          },
+        })
+        .limit(limit ?parseInt(limit,10): null);
+        console.log('hahaha', visits);
+        return visits
+
+    }
   }
 
   async findAllVisitors(limit: string, botId): Promise<Visitors[]> {
-    return await this.visitorsModel.find({botId}).limit(parseInt(limit, 10));
+    console.log('limited', limit, botId);
+    const visitors = await this.visitorsModel.find({ botId }).limit(parseInt(limit, 10));
+   
+    return visitors
   }
   async findAll(botId): Promise<Visitors[]> {
-    console.log(botId)
-    return await this.visitorsModel.find({botId});
+    console.log(botId);
+    return await this.visitorsModel.find({ botId });
+  }
+  async findAllVisits(): Promise<Visitors[]> {
+    return await this.visitorsModel.find({});
   }
 }

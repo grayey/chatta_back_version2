@@ -67,10 +67,12 @@ async function keyPhraseExtraction(client, keyPhrasesInput) {
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly visitorService: VisitorsService) {}
-  getDate = () => {
+  getDate = (date = null) => {
     const time = new Date();
-    return `${time.getMonth() +
-      1}/${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+    return date
+      ? `${time.getMonth() + 1}/${time.getDate()}/${time.getFullYear()}`
+      : `${time.getMonth() +
+          1}/${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
   };
   users = [];
   then = '';
@@ -115,6 +117,7 @@ export class AppGateway
     return convo.slice(2, convo.length - 1);
   };
   async handleDisconnect(client: Socket) {
+    const created = this.getDate(true);
     const userConversations = await this.getUserConversations(
       this.conversations,
     );
@@ -149,19 +152,15 @@ export class AppGateway
         if (keywordAnalytics) {
           userInfo['visitor']['keywordAnalytics'] = keywordAnalytics;
         }
-        // this.visitorService.createVisitors(
-        //   { visitors: userInfo['visitor'], botId: this.botId },
-        //   Res,
-        //   Req,
-        // );
 
         axios
-          .post('https://mychattaback.herokuapp.com/visitors', {
+          .post('http://localhost:9000/visitors', {
             visitors: userInfo['visitor'],
             botId: this.botId,
+            created,
           })
           .then(res => {
-            console.log('response', res.data.data.visitors.keywordAnalytics);
+            console.log('response', res.data.data);
           })
           .catch(error => {
             console.log(error.message);
