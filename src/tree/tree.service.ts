@@ -3,6 +3,7 @@ import { Tree } from './interfaces/tree.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ResponseService } from '../services/ResponseHandler/response-handler.service';
+import { SearchEngineService } from '../services/Search/search.service';
 import * as bcrypt from 'bcrypt';
 import { tsThisType } from '@babel/types';
 
@@ -36,10 +37,39 @@ export class TreeService {
     }
   }
   async findTree(id: string): Promise<Tree> {
-    return await this.treeModel.findOne({ _id: id });
+    const conversationTree = this.treeModel.findOne({ _id: id });
+    return conversationTree;
+  }
+  async findConversationByKeyword(
+    id: string,
+    keyword: string,
+    req,
+    res,
+  ): Promise<Tree> {
+    try {
+      const conversationTree =
+        (await this.treeModel.findOne({ phone: id })) ||
+        (await this.treeModel.findOne({ _id: id }));
+      const { chat_body } = conversationTree;
+      const searchEngine = new SearchEngineService(chat_body);
+      const result = await searchEngine.search(keyword);
+      if (result.prompt) {
+        return this.responseService.requestSuccessful(res, {
+          success: true,
+          message: 'Your search was executed successfully',
+          data: result,
+        });
+      }
+      return this.responseService.clientError(
+        res,
+        'An error occured while performing your search',
+      );
+    } catch (error) {
+      return this.responseService.serverError(res, error.message);
+    }
   }
   async findTreeByClient(clientId: string): Promise<Tree> {
-    return await this.treeModel.find({ clientId }).populate("setting_id");
+    return await this.treeModel.find({ clientId }).populate('setting_id');
   }
   async findAllTrees(): Promise<Tree[]> {
     return await this.treeModel.find();
@@ -64,7 +94,7 @@ export class TreeService {
       }
       return this.responseService.clientError(
         res,
-        'An error occured while updating the tree',
+        'An error occured while updating the tree. Please try again',
       );
     } catch (e) {
       return this.responseService.serverError(res, e.message);

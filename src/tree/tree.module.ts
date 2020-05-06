@@ -4,6 +4,7 @@ import { TreeService } from './tree.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { treeSchema } from './schemas/tree.schema';
 import { ResponseService } from '../services/ResponseHandler/response-handler.service';
+import { SearchEngineService } from '../services/Search/search.service';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'Tree', schema: treeSchema }])],
