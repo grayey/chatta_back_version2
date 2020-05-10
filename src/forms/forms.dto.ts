@@ -1,4 +1,5 @@
 export class CreateFormDto {
+  readonly company_id: string;
   readonly form_name: string;
   readonly action_url: string;
   readonly is_payment: string;

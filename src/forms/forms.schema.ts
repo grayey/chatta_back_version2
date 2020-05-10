@@ -1,7 +1,8 @@
 import { Schema } from 'mongoose';
 
 export const FormsSchema = new Schema({
-  // clientId: { type: Schema.Types.ObjectId, ref: 'Client' },
+  // company_id: { type: Schema.Types.ObjectId, ref: 'Companies' },
+  company_id: { type: Schema.Types.ObjectId, ref: 'Companies' },
   form_name: {
     type: String,
     max: 50,
