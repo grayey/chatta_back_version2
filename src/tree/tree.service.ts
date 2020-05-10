@@ -50,19 +50,20 @@ export class TreeService {
       const conversationTree =
         (await this.treeModel.findOne({ phone: id })) ||
         (await this.treeModel.findOne({ _id: id }));
-      const { chat_body } = conversationTree;
-      const searchEngine = new SearchEngineService(chat_body);
-      const result = await searchEngine.search(keyword);
-      if (result.prompt) {
+      if (conversationTree) {
+        const { chat_body } = conversationTree;
+        const searchEngine = new SearchEngineService(chat_body);
+        const result = await searchEngine.search(keyword);
         return this.responseService.requestSuccessful(res, {
           success: true,
-          message: 'Your search was executed successfully',
+          message: 'Your search was executed successfully.',
           data: result,
         });
       }
+
       return this.responseService.clientError(
         res,
-        'An error occured while performing your search',
+        'Could not find a chat tree belonging to this identifier',
       );
     } catch (error) {
       return this.responseService.serverError(res, error.message);

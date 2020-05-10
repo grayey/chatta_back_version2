@@ -7,7 +7,7 @@ import {
   Patch,
   Get,
   Body,
-  UseGuards,
+  Query,
   Res,
   Req,
 } from '@nestjs/common';
@@ -17,7 +17,7 @@ import { Tree } from '../tree/interfaces/tree.interface';
 import { CreateTreeDto } from './dto/create-tree-dto';
 import { TreesService } from 'src/modules/trees/trees/trees.service';
 
-@Controller('api/v1/tree')
+@Controller('api/v1')
 export class TreeController {
   constructor(private treeService: TreeService) {}
   @Post()
@@ -32,10 +32,10 @@ export class TreeController {
   findOne(@Param('id') id): Promise<Tree> {
     return this.treeService.findTree(id);
   }
-  @Get(':id/:keyword')
+  @Get('search/:id')
   findByKeyword(
     @Param('id') id,
-    @Param('keyword') keyword,
+    @Query('keyword') keyword,
     @Req() res: Response,
     @Res() req: Request,
   ): Promise<Tree> {
