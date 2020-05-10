@@ -14,15 +14,15 @@ import * as moment from 'moment';
 import { VisitorsService } from './visitors/visitors.service';
 import {
   TextAnalyticsClient,
-  TextAnalyticsApiKeyCredential,
+  // TextAnalyticsApiKeyCredential,
 } from '@azure/ai-text-analytics';
 const key = '2b4c830b2d9447089631867bc98f837d';
 const endpoint = `https://mychatta.cognitiveservices.azure.com/`;
 
-const textAnalyticsClient = new TextAnalyticsClient(
-  endpoint,
-  new TextAnalyticsApiKeyCredential(key),
-);
+// const textAnalyticsClient = new TextAnalyticsClient(
+//   endpoint,
+//   new TextAnalyticsApiKeyCredential(key),
+// );
 async function keyPhraseExtraction(client, keyPhrasesInput) {
   const keywords = [];
 
@@ -123,7 +123,8 @@ export class AppGateway
     );
     if (userConversations.length) {
       const keywordAnalytics = await keyPhraseExtraction(
-        textAnalyticsClient,
+        // textAnalyticsClient,
+        null, // change all this
         userConversations,
       );
 

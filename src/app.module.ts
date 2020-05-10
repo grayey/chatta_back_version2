@@ -47,6 +47,10 @@ import {AppGateway} from './app.gateway'
 import { PaymentService } from './payment/payment.service';
 import { PaymentController } from './payment/payment.controller';
 import { paymentSchemas } from './payment/schemas/payment.schema';
+import { FormsSchema } from './forms/forms.schema';
+import { FormsModule } from './forms/forms.module';
+import { FormsController } from './forms/forms.controller';
+import { FormsService } from './forms/forms.service';
  const configuration = () => ({
   port: parseInt(process.env.PORT, 10) || 9000,
   database: {
@@ -65,7 +69,9 @@ import { paymentSchemas } from './payment/schemas/payment.schema';
       {name: 'Visitors', schema: VisitorsSchema},
       {name: "Activeusers", schema: ActiveusersSchema},
       {name: "Training", schema: TrainingSchema},
-      { name: "Payment", schema: paymentSchemas }
+      { name: "Payment", schema: paymentSchemas },
+      { name: "Forms", schema: FormsSchema },
+
 
 
     ]),
@@ -81,10 +87,11 @@ import { paymentSchemas } from './payment/schemas/payment.schema';
     PaymentModule,
     OfflineModule,
     TrainingModule,
+    FormsModule,
     ConfigModule.forRoot({isGlobal:true, load:[configuration]}),
     MongooseModule.forRoot(process.env.DB_URL),
   ],
-  controllers: [ClientController, SettingController, CompaniesController, TrainingController, PaymentController],
+  controllers: [ClientController, SettingController, CompaniesController, TrainingController, PaymentController,FormsController],
   providers: [
     AppGateway,
     ClientsService,
@@ -99,7 +106,8 @@ import { paymentSchemas } from './payment/schemas/payment.schema';
     CompaniesService,
     OfflineService,
     TrainingService,
-    PaymentService
+    PaymentService,
+    FormsService
     
   ],
 })
