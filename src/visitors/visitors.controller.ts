@@ -34,7 +34,6 @@ export class VisitorsController {
     @Param('type') type,
     @Param('limit') limit,
   ): Promise<Visitors> {
-    console.log('as well', botId);
     return this.visitorsService.findVisitorsByRange(date, botId, type, limit);
   }
   @Get('/all')
@@ -42,7 +41,6 @@ export class VisitorsController {
     @Query('limit') limit,
     @Query('botId') botId,
   ): Promise<Visitors[]> {
-    console.log('calledd', botId);
 
     return this.visitorsService.findAllVisitors(limit, botId);
   }
