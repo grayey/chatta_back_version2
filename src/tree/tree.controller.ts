@@ -10,12 +10,14 @@ import {
   Query,
   Res,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { TreeService } from './tree.service';
 import { Tree } from '../tree/interfaces/tree.interface';
 import { CreateTreeDto } from './dto/create-tree-dto';
 import { TreesService } from 'src/modules/trees/trees/trees.service';
+import { AuthGuard } from '../middleware/auth.guard';
 
 @Controller('api/v1')
 export class TreeController {
@@ -32,7 +34,9 @@ export class TreeController {
   findOne(@Param('id') id): Promise<Tree> {
     return this.treeService.findTree(id);
   }
+  
   @Get('search/:id')
+  @UseGuards(new AuthGuard())
   findByKeyword(
     @Param('id') id,
     @Query('keyword') keyword,

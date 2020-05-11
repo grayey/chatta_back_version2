@@ -3,7 +3,7 @@
 GET http://localhost:9000/payment?botId=5e69fe8f145c2f001756a177
 ###
 
-DELETE http://localhost:9000/client/5e861ea26c6e770017fb731d
+GET http://localhost:9000/api/v1/
 
 ###
 POST http://localhost:9000/payment
