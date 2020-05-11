@@ -49,6 +49,12 @@ export class TreeController {
   async findAllTrees(): Promise<Tree[]> {
     return this.treeService.findAllTrees();
   }
+
+  @Get('search-id/:id')
+  async findConvoBySelection(@Query('selection') queryItem, @Param('id') paramItem, @Res() response) {
+    return await this.treeService.getConvoBySelection(paramItem, queryItem, response);
+  }
+
   @Patch(':id')
   async deleteTree(
     @Param('id') id,

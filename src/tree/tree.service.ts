@@ -5,7 +5,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ResponseService } from '../services/ResponseHandler/response-handler.service';
 import { SearchEngineService } from '../services/Search/search.service';
 import * as bcrypt from 'bcrypt';
-import { tsThisType } from '@babel/types';
+
+let globalIndex = 0;
+let buttonsContent;
 
 @Injectable()
 export class TreeService {
@@ -75,6 +77,32 @@ export class TreeService {
   async findAllTrees(): Promise<Tree[]> {
     return await this.treeModel.find();
   }
+  async getConvoBySelection(id: string, item, res) {
+    const conversationTree =
+      (await this.treeModel.findOne({ phone: id })) ||
+      (await this.treeModel.findOne({ _id: id }));
+    let convoTree = conversationTree.chat_body;
+    if (!item) globalIndex = 0
+    buttonsContent = convoTree[globalIndex];
+    try {
+      if (item) {
+        let responseKey = convoTree[globalIndex].response.buttons[item - 1].key;
+        convoTree.filter((node, index) => {
+          if (node.identity === responseKey) {
+            globalIndex = index
+            return
+          }
+        });
+        buttonsContent = convoTree[globalIndex];
+      }
+    } catch (error) {
+      return this.responseService.clientError(
+        res,
+        "Invalid input. Please try again with appropriate input." );
+    }
+    return await this.responseService.requestSuccessful(res, { success: true, message: "your search result was successfully executed", data: buttonsContent })
+  }
+
   async updateTree(id: string, tree: Tree, req, res): Promise<Tree[]> {
     console.log(tree['chat_body']);
     try {
