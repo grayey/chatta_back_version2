@@ -1,11 +1,61 @@
 
 
+GET http://localhost:9000/api/v1/search-id/5ea8e3b20e1a305dd2a8e7df
+###
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 GET http://localhost:9000/payment?botId=5e69fe8f145c2f001756a177
 ###
 
-GET http://localhost:9000/api/v1/
 
+DELETE http://localhost:9000/client/5e861ea26c6e770017fb731d
 ###
+
+
 POST http://localhost:9000/payment
 
 {
