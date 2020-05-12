@@ -19,7 +19,7 @@ import { TreesService } from 'src/modules/trees/trees/trees.service';
 
 @Controller('api/v1')
 export class TreeController {
-  constructor(private treeService: TreeService) {}
+  constructor(private treeService: TreeService) { }
   @Post()
   async createTree(
     @Body() createTreeDto: CreateTreeDto,
@@ -28,6 +28,12 @@ export class TreeController {
   ): Promise<Tree> {
     return this.treeService.createTree(createTreeDto, res, req);
   }
+
+  @Get('search-id/:id')
+  async findConvoBySelection(@Query('key') queryItem, @Param('id') paramItem, @Res() response) {
+    return await this.treeService.getConvoById(paramItem, queryItem, response);
+  }
+
   @Get(':id')
   findOne(@Param('id') id): Promise<Tree> {
     return this.treeService.findTree(id);
@@ -50,10 +56,6 @@ export class TreeController {
     return this.treeService.findAllTrees();
   }
 
-  @Get('search-id/:id')
-  async findConvoBySelection(@Query('selection') queryItem, @Param('id') paramItem, @Res() response) {
-    return await this.treeService.getConvoBySelection(paramItem, queryItem, response);
-  }
 
   @Patch(':id')
   async deleteTree(

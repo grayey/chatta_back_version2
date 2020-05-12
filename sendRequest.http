@@ -1,6 +1,6 @@
 
 
-GET http://localhost:9000/api/v1/search-id/5ea8e3b20e1a305dd2a8e7df?selection=1
+GET http://localhost:9000/api/v1/search-id/5ea8e3b20e1a305dd2a8e7df
 ###
 
 

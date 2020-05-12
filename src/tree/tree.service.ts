@@ -6,9 +6,6 @@ import { ResponseService } from '../services/ResponseHandler/response-handler.se
 import { SearchEngineService } from '../services/Search/search.service';
 import * as bcrypt from 'bcrypt';
 
-let globalIndex = 0;
-let buttonsContent;
-
 @Injectable()
 export class TreeService {
   protected BASE_URL = process.env.BASE_URL;
@@ -16,7 +13,7 @@ export class TreeService {
   constructor(
     @InjectModel('Tree') private treeModel: Model<Tree>,
     private responseService: ResponseService,
-  ) {}
+  ) { }
 
   async createTree(tree: Tree, req, res): Promise<Tree> {
     const newTree = new this.treeModel(tree);
@@ -77,30 +74,28 @@ export class TreeService {
   async findAllTrees(): Promise<Tree[]> {
     return await this.treeModel.find();
   }
-  async getConvoBySelection(id: string, item, res) {
-    const conversationTree =
-      (await this.treeModel.findOne({ phone: id })) ||
-      (await this.treeModel.findOne({ _id: id }));
-    let convoTree = conversationTree.chat_body;
-    if (!item) globalIndex = 0
-    buttonsContent = convoTree[globalIndex];
+
+  async getConvoById(id: string, searchId, res) {
     try {
-      if (item) {
-        let responseKey = convoTree[globalIndex].response.buttons[item - 1].key;
-        convoTree.filter((node, index) => {
-          if (node.identity === responseKey) {
-            globalIndex = index
-            return
-          }
-        });
-        buttonsContent = convoTree[globalIndex];
+      const conversationTree =
+        (await this.treeModel.findOne({ phone: id })) ||
+        (await this.treeModel.findOne({ _id: id }));
+      const { chat_body } = conversationTree;
+      const searchEngine = new SearchEngineService(chat_body);
+      const result = await searchEngine.findById(searchId||chat_body[0].identity, chat_body);
+      if (result) {
+        return await this.responseService.requestSuccessful(res, { success: true, message: "your search result was successfully executed", data: result })
       }
+      else {
+        return this.responseService.clientError(
+          res,
+          "Invalid input. Please try again with appropriate input.");
+      }
+
     } catch (error) {
-      return this.responseService.clientError(
-        res,
-        "Invalid input. Please try again with appropriate input." );
+      return this.responseService.serverError(res, error.message);
     }
-    return await this.responseService.requestSuccessful(res, { success: true, message: "your search result was successfully executed", data: buttonsContent })
+
   }
 
   async updateTree(id: string, tree: Tree, req, res): Promise<Tree[]> {
