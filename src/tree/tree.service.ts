@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ResponseService } from '../services/ResponseHandler/response-handler.service';
 import { SearchEngineService } from '../services/Search/search.service';
 import * as bcrypt from 'bcrypt';
-import { tsThisType } from '@babel/types';
 
 @Injectable()
 export class TreeService {
@@ -14,7 +13,7 @@ export class TreeService {
   constructor(
     @InjectModel('Tree') private treeModel: Model<Tree>,
     private responseService: ResponseService,
-  ) {}
+  ) { }
 
   async createTree(tree: Tree, req, res): Promise<Tree> {
     const newTree = new this.treeModel(tree);
@@ -75,6 +74,30 @@ export class TreeService {
   async findAllTrees(): Promise<Tree[]> {
     return await this.treeModel.find();
   }
+
+  async getConvoById(id: string, searchId, res) {
+    try {
+      const conversationTree =
+        (await this.treeModel.findOne({ phone: id })) ||
+        (await this.treeModel.findOne({ _id: id }));
+      const { chat_body } = conversationTree;
+      const searchEngine = new SearchEngineService(chat_body);
+      const result = await searchEngine.findById(searchId||chat_body[0].identity, chat_body);
+      if (result) {
+        return await this.responseService.requestSuccessful(res, { success: true, message: "your search result was successfully executed", data: result })
+      }
+      else {
+        return this.responseService.clientError(
+          res,
+          "Invalid input. Please try again with appropriate input.");
+      }
+
+    } catch (error) {
+      return this.responseService.serverError(res, error.message);
+    }
+
+  }
+
   async updateTree(id: string, tree: Tree, req, res): Promise<Tree[]> {
     console.log(tree['chat_body']);
     try {
