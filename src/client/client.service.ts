@@ -280,6 +280,33 @@ export class ClientsService {
       });
     });
   }
+  
+  async authenticateUser(user, res) {
+    try {
+      const foundUser = await this.findOneByEmail(user.email);
+      if (foundUser) {
+        return this.responseService.clientError(
+          res,
+          'User already exist',
+        );
+      }
+      const token = await TokenService.getToken({
+        fullName: user.fullName,
+        email: user.email,
+      }, '0');
+      user.password = await bcrypt.hash(user.password, 6);
+      user.token = token;
+      const apiUserCreated = await new this.clientModel(user)
+      if(apiUserCreated){
+
+        return this.responseService.requestSuccessful(res, user);
+      }
+
+    } catch (error) {
+      return this.responseService.serverError(res, error.message);
+    }
+
+  }
 }
 
 // async findOne(id: string): Promise<Client> {

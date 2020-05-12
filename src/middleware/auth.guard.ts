@@ -5,6 +5,7 @@ import {
     HttpException,
     HttpStatus,
 } from '@nestjs/common';
+import { TokenService} from '../services/JWT/jwt.service';
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()
@@ -25,9 +26,10 @@ export class AuthGuard implements CanActivate {
             throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
         }
         const token = auth.split(' ')[1];
+        const reshuffledToken = await TokenService.shuffleToken(token);
 
         try {
-            const decoded: any = await jwt.verify(token, process.env.SECRET);
+            const decoded: any = await jwt.verify(reshuffledToken, process.env.SECRET_KEY);
 
             return decoded;
         } catch (err) {

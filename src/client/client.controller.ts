@@ -20,37 +20,46 @@ import { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 // @Controller('client')
 
-@Controller('client')
+@Controller('api/v1')
 export class ClientController {
   constructor(private readonly clientService: ClientsService) {}
 
-  @Get()
+  @Get('client/')
   findAll(): Promise<Client[]> {
     return this.clientService.findAll();
   }
 
-  @Get(':id')
+  @Get('client/:id')
   findOne(@Param('id') id): Promise<Client> {
     return this.clientService.findOne(id);
   }
-  @Get(':all/:clientId')
+  @Get('client/:all/:clientId')
   findAllByClient(@Param('clientId') clientId): Promise<Client> {
     return this.clientService.findAllByClient(clientId);
   }
-  @Post('new')
+  @Post('client/new')
   create(@Body() createClientDto): Promise<Client> {
     return this.clientService.create(createClientDto);
   }
 
-  @Delete(':id')
+  @Delete('client/:id')
   delete(@Param('id') id): Promise<Client> {
     return this.clientService.delete(id);
   }
 
-  @Put(':id')
+  @Put('client/:id')
   update(@Body() updateClientDto, @Param('id') id, @Query('companyId') companyId): Promise<Client> {
     console.log('companyId', companyId, id)
     return this.clientService.update(id, updateClientDto, companyId);
+  }
+  @Post('auth/user')
+  async Authenticate(
+    @Body() apiUserDto,
+    @Req() req,
+    @Res() res,
+  ) {
+
+    return await this.clientService.authenticateUser(apiUserDto, res);
   }
 
   // @Put(':id')
@@ -58,7 +67,7 @@ export class ClientController {
   //   return this.clientService.findAndUpdate(id);
   // }
 
-  @Post()
+  @Post('client/')
   async signUp(
     @Body() createClientDto,
     @Req() res: Response,
@@ -66,7 +75,7 @@ export class ClientController {
   ): Promise<Client> {
     return this.clientService.signUp(createClientDto, res, req);
   }
-  @Post('reset-password')
+  @Post('client/reset-password')
   async sendPasswordRecoveryEmail(
     @Body() createClientDto,
     @Req() res: Response,
@@ -83,7 +92,7 @@ export class ClientController {
     };
   }
 
-  @Patch(':id')
+  @Patch('client/:id')
   findByIdAndToggleEnable(@Param('id') id): Promise<Client> {
     return this.clientService.findByIdAndToggleEnable(id);
   }
