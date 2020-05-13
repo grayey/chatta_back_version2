@@ -22,6 +22,13 @@ import { AuthGuard } from '../middleware/auth.guard';
 @Controller('api/v1')
 export class TreeController {
   constructor(private treeService: TreeService) { }
+  
+  @Get('search-id/:id')
+  @UseGuards(new AuthGuard())
+  async findConvoBySelection(@Query('key') queryItem, @Param('id') paramItem, @Res() response) {
+    return await this.treeService.getConvoById(paramItem, queryItem, response);
+  }
+
   @Post()
   async createTree(
     @Body() createTreeDto: CreateTreeDto,
@@ -29,12 +36,6 @@ export class TreeController {
     @Res() req: Request,
   ): Promise<Tree> {
     return this.treeService.createTree(createTreeDto, res, req);
-  }
-
-  @Get('search-id/:id')
-  @UseGuards(new AuthGuard())
-  async findConvoBySelection(@Query('key') queryItem, @Param('id') paramItem, @Res() response) {
-    return await this.treeService.getConvoById(paramItem, queryItem, response);
   }
 
   @Get(':id')
@@ -52,6 +53,7 @@ export class TreeController {
   ): Promise<Tree> {
     return this.treeService.findConversationByKeyword(id, keyword, res, req);
   }
+
   @Get('all/:clientId')
   findTreeByClient(@Param('clientId') clientId): Promise<Tree> {
     return this.treeService.findTreeByClient(clientId);
