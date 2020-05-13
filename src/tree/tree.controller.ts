@@ -32,6 +32,7 @@ export class TreeController {
   }
 
   @Get('search-id/:id')
+  @UseGuards(new AuthGuard())
   async findConvoBySelection(@Query('key') queryItem, @Param('id') paramItem, @Res() response) {
     return await this.treeService.getConvoById(paramItem, queryItem, response);
   }
@@ -40,7 +41,7 @@ export class TreeController {
   findOne(@Param('id') id): Promise<Tree> {
     return this.treeService.findTree(id);
   }
-  
+
   @Get('search/:id')
   @UseGuards(new AuthGuard())
   findByKeyword(
