@@ -22,7 +22,7 @@ import { AuthGuard } from '../middleware/auth.guard';
 @Controller('api/v1')
 export class TreeController {
   constructor(private treeService: TreeService) { }
-  
+
   @Get('search-id/:id')
   @UseGuards(new AuthGuard())
   async findConvoBySelection(@Query('key') queryItem, @Param('id') paramItem, @Res() response) {
@@ -62,7 +62,6 @@ export class TreeController {
   async findAllTrees(): Promise<Tree[]> {
     return this.treeService.findAllTrees();
   }
-
 
   @Patch(':id')
   async deleteTree(
