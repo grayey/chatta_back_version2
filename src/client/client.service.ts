@@ -293,7 +293,7 @@ export class ClientsService {
       const token = await TokenService.getToken({
         fullName: user.fullName,
         email: user.email,
-      }, '0');
+      });
       user.password = await bcrypt.hash(user.password, 6);
       user.token = token;
       const apiUserCreated = await new this.clientModel(user)
