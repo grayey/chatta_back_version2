@@ -1,22 +1,22 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { TokenService } from '../services/JWT/jwt.service';
-import { LoginUserDto } from '../client/dto/login-user.dto';
-import { ClientsService } from '../client/client.service';
-import { JwtPayload } from './interfaces/jwt-payload.interface';
-import * as bcrypt from 'bcrypt';
-import { ResponseService } from '../services/ResponseHandler/response-handler.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { TokenService } from "../services/JWT/jwt.service";
+import { LoginUserDto } from "../client/dto/login-user.dto";
+import { ClientsService } from "../client/client.service";
+import { JwtPayload } from "./interfaces/jwt-payload.interface";
+import * as bcrypt from "bcrypt";
+import { ResponseService } from "../services/ResponseHandler/response-handler.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private clientService: ClientsService,
-    private responseService: ResponseService,
+    private responseService: ResponseService
   ) {}
   async validateUserPassword(suppliedDetails: LoginUserDto, req, res) {
-    if (suppliedDetails.email === '' || suppliedDetails.password === '') {
+    if (suppliedDetails.email === "" || suppliedDetails.password === "") {
       return this.responseService.clientError(
         res,
-        'One or more fields is empty',
+        "One or more fields is empty"
       );
     }
     const user = await this.clientService.findOneByEmail(suppliedDetails.email);
@@ -31,12 +31,12 @@ export class AuthService {
       // }
       const isMatch = await bcrypt.compare(
         suppliedDetails.password,
-        user.password,
+        user.password
       );
       if (isMatch && !user.isEnabled) {
         return await this.responseService.clientError(
           res,
-          'You are currently disabled, please contact Administrator',
+          "You are currently disabled, please contact Administrator"
         );
       }
       const userIsValid = await this.verifyUser(isMatch, user, res);
@@ -44,10 +44,10 @@ export class AuthService {
       if (userIsValid) {
         return userIsValid;
       } else {
-        return this.responseService.clientError(res, 'Invalid credentials');
+        return this.responseService.clientError(res, "Invalid credentials");
       }
     } else if (!user) {
-      return this.responseService.clientError(res, 'Invalid credentials');
+      return this.responseService.clientError(res, "Invalid credentials");
     }
   }
 
@@ -55,16 +55,16 @@ export class AuthService {
     const userPayLoad = await TokenService.checkToken(token);
     console.log(userPayLoad);
     const verifiedUser = this.clientService.verifyEmail(
-      userPayLoad['email'],
+      userPayLoad["email"],
       req,
-      res,
+      res
     );
-    if (verifiedUser && userPayLoad['success']) {
+    if (verifiedUser && userPayLoad["success"]) {
       return await this.verifyUser(true, userPayLoad, res);
     }
     return await this.responseService.clientError(
       res,
-      'Could not validate user',
+      "Could not validate user"
     );
   }
 
@@ -73,24 +73,24 @@ export class AuthService {
     console.log(userPayLoad);
 
     const verifiedUser = this.clientService.resetPassword(
-      userPayLoad['email'],
+      userPayLoad["email"],
       req.body.passwords,
       req,
-      res,
+      res
     );
-    if (verifiedUser && userPayLoad['success']) {
+    if (verifiedUser && userPayLoad["success"]) {
       return this.responseService.requestSuccessful(
         res,
         {
           success: true,
-          message: 'Password successfully reset. You can proceed to login',
+          message: "Password successfully reset. You can proceed to login",
         },
-        200,
+        200
       );
     }
     return await this.responseService.clientError(
       res,
-      'Could not reset password',
+      "Could not reset password"
     );
   }
   async validateUserByJwt(payload: JwtPayload) {
@@ -126,16 +126,16 @@ export class AuthService {
           fullName: user.fullName,
           token: tokenCreated,
           role: user.role,
-          companyId: user.companyId
+          companyId: user.companyId,
         };
         return this.responseService.requestSuccessful(
           res,
           {
             success: true,
-            message: 'Login successful...',
+            message: "Login successful...",
             userDetails,
           },
-          200,
+          200
         );
       }
     }
