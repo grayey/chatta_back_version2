@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from '../client/dto/login-user.dto';
 import { Response, Request } from 'express';
 
-@Controller('auth')
+@Controller('api/v1/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
   @Get('/verify_email')
@@ -43,7 +43,7 @@ export class AuthController {
     }
     return {};
   }
-  @Post()
+  @Post("login")
   async login(
     @Body() loginUserDto: LoginUserDto,
     @Req() req: Response,
