@@ -11,21 +11,25 @@ import {
   Res,
   Req,
   UseGuards,
-} from '@nestjs/common';
-import { Response, Request } from 'express';
-import { TreeService } from './tree.service';
-import { Tree } from '../tree/interfaces/tree.interface';
-import { CreateTreeDto } from './dto/create-tree-dto';
-import { TreesService } from 'src/modules/trees/trees/trees.service';
-import { AuthGuard } from '../middleware/auth.guard';
+} from "@nestjs/common";
+import { Response, Request } from "express";
+import { TreeService } from "./tree.service";
+import { Tree } from "../tree/interfaces/tree.interface";
+import { CreateTreeDto } from "./dto/create-tree-dto";
+import { TreesService } from "src/modules/trees/trees/trees.service";
+import { AuthGuard } from "../middleware/auth.guard";
 
-@Controller('api/v1')
+@Controller("api/v1")
 export class TreeController {
-  constructor(private treeService: TreeService) { }
+  constructor(private treeService: TreeService) {}
 
-  @Get('search-id/:id')
+  @Get("search-id/:id")
   @UseGuards(new AuthGuard())
-  async findConvoBySelection(@Query('key') queryItem, @Param('id') paramItem, @Res() response) {
+  async findConvoBySelection(
+    @Query("key") queryItem,
+    @Param("id") paramItem,
+    @Res() response
+  ) {
     return await this.treeService.getConvoById(paramItem, queryItem, response);
   }
 
@@ -33,29 +37,29 @@ export class TreeController {
   async createTree(
     @Body() createTreeDto: CreateTreeDto,
     @Req() res: Response,
-    @Res() req: Request,
+    @Res() req: Request
   ): Promise<Tree> {
     return this.treeService.createTree(createTreeDto, res, req);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id): Promise<Tree> {
+  @Get(":id")
+  findOne(@Param("id") id): Promise<Tree> {
     return this.treeService.findTree(id);
   }
 
-  @Get('search/:id')
+  @Get("search/:id")
   @UseGuards(new AuthGuard())
   findByKeyword(
-    @Param('id') id,
-    @Query('keyword') keyword,
+    @Param("id") id,
+    @Query("keyword") keyword,
     @Req() res: Response,
-    @Res() req: Request,
+    @Res() req: Request
   ): Promise<Tree> {
     return this.treeService.findConversationByKeyword(id, keyword, res, req);
   }
 
-  @Get('all/:clientId')
-  findTreeByClient(@Param('clientId') clientId): Promise<Tree> {
+  @Get("all/:clientId")
+  findTreeByClient(@Param("clientId") clientId): Promise<Tree> {
     return this.treeService.findTreeByClient(clientId);
   }
   @Get()
@@ -63,12 +67,12 @@ export class TreeController {
     return this.treeService.findAllTrees();
   }
 
-  @Patch(':id')
+  @Patch(":id")
   async deleteTree(
-    @Param('id') id,
+    @Param("id") id,
     @Req() req: Request,
     @Res() res: Response,
-    @Body() treeDTO: CreateTreeDto,
+    @Body() treeDTO: CreateTreeDto
   ): Promise<Tree[]> {
     return this.treeService.updateTree(id, treeDTO, req, res);
   }
