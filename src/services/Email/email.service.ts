@@ -1,8 +1,8 @@
-import { SendGridService } from '@anchan828/nest-sendgrid';
-import { Injectable } from '@nestjs/common';
-let baseUrl = '';
+import { SendGridService } from "@anchan828/nest-sendgrid";
+import { Injectable } from "@nestjs/common";
+let baseUrl = "";
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   baseUrl = process.env.SENDGRID_DEVELOPMENT__URL;
 } else {
   baseUrl = process.env.SENDGRID_PRODUCTION__URL;
@@ -26,7 +26,7 @@ export class EmailService {
   async verifyEmail(email, firstName, token) {
     const details = {
       email,
-      subject: 'Email Verification - Chatta',
+      subject: "Email Verification - Chatta",
       html: `'<div style="width: 90%; margin: 5em auto;
        box-shadow: 0 0 10px rgba(0,0,0,.9);">
         <div>
@@ -75,7 +75,7 @@ export class EmailService {
   async confirmRegistrationComplete(email) {
     const details = {
       email,
-      subject: 'Email Verification - Chatta',
+      subject: "Email Verification - Chatta",
       html: `<p>Your registration has been completed<p>
       <p>Thank you for registering with Chatta.</p>
        <p> >>>
@@ -124,6 +124,39 @@ export class EmailService {
     return this.emailSender(details);
   }
   /**
+   * This function sends an email on receiving request for demo
+   * @param {string} email - email address to send the message to
+   * @param {string} token - Token generated during signup
+   * @returns {boolean} specifies if a verification email was sent to user
+   * after registration
+   */
+  async sendEmailToAdmin(payload) {
+    const details = {
+      email: payload.adminEmail,
+      subject:
+        payload.callToAction === "requestDemo"
+          ? "New demo request"
+          : "New meeting request",
+      html:
+        payload.callToAction === "requestDemo"
+          ? `<p>Hi ${payload.adminName}<p>
+      <p>A user, ${payload.name} has just requested for a demo of our ${
+              payload.parentValue
+            } service. Kindly follow up via his email: ${payload.email}</p>
+       <p> >>>
+       <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`
+          : `<p>Hi ${payload.adminName}<p>
+       <p>This is to notify you that a user, ${
+         payload.name
+       } has scheduled a meeting with you on ${payload.date} concerning our  ${
+              payload.parentValue
+            } service. Kindly follow him up via his email: ${payload}</p>
+       <p> >>>
+       <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`,
+    };
+    return this.emailSender(details);
+  }
+  /**
    * This function sends an email on receiving request for a meeting
    * @param {string} email - email address to send the message to
    * @param {string} token - Token generated during signup
@@ -155,7 +188,7 @@ export class EmailService {
   async resetPassword(email, firstName, token) {
     const details = {
       email,
-      subject: 'Reset Password - MyChatta',
+      subject: "Reset Password - MyChatta",
       html: `'<div style="width: 90%; margin: 5em auto;
       box-shadow: 0 0 10px rgba(0,0,0,.9);">
        <div>
@@ -196,7 +229,7 @@ export class EmailService {
    * @returns {boolean} sends email to users
    */
   async emailSender(details) {
-    console.log('emailsender:');
+    console.log("emailsender:");
     const msg = {
       from: process.env.mail_master,
       html: details.html,
