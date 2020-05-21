@@ -35,7 +35,7 @@ export class OfflineController {
     @Req() res: Response,
     @Res() req: Request
   ): Promise<Offline> {
-    return this.offlineService.sendRequestDemoMessage(
+    return this.offlineService.sendCallToActionEmail(
       id,
       createOfflineDto,
       res,

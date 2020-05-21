@@ -13,7 +13,7 @@ export class OfflineService {
   constructor(
     @InjectModel("Tree") private treeModel: Model<Tree>,
     private emailService: EmailService,
-    private responseService: ResponseService,
+    private responseService: ResponseService
   ) {}
 
   async validateEmail(email) {
@@ -40,7 +40,7 @@ export class OfflineService {
       return this.responseService.serverError(res, e.message);
     }
   }
-  async sendRequestDemoMessage(
+  async sendCallToActionEmail(
     id: String,
     payload: Offline,
     req,
@@ -54,6 +54,31 @@ export class OfflineService {
           .populate("clientId")
           .exec());
       if (conversationTree) {
+        if (
+          !(payload["callToAction"] === "scheduleMeeting" || payload["callToAction"] === "requestDemo"
+        ) ){
+          return this.responseService.clientError(res, "please include a valid call to action");
+        }
+        if (
+          payload["callToAction"] &&
+          payload["email"] &&
+          payload["name"] &&
+          payload["callToAction"] &&
+          payload["parentValue"]
+        ) {
+          if (
+            payload["callToAction"] === "scheduleMeeting" &&
+            !payload["date"]
+          ) {
+            return this.responseService.clientError(res, "date is missing");
+          }
+        } else {
+          return this.responseService.clientError(
+            res,
+            "one or more fields is missing"
+          );
+        }
+
         const user = conversationTree.clientId;
         const { email, name } = user;
 
@@ -70,7 +95,14 @@ export class OfflineService {
         if (sendUserEmail && sendAdminEmail) {
           return this.responseService.requestSuccessful(res, {
             success: true,
-            message: "An email has been sent successfully ",
+            message:
+              payload["callToAction"] === "requestDemo"
+                ? `Thank you for your interest in our ${
+                    payload["parentValue"]
+                  } services. One of your agents will contact you via the email address you provided with instructions on how to access the demo.`
+                : `Thank you for your interest in our ${
+                    payload["parentValue"]
+                  } Your meeting has been scheduled successfully. One of our agents will contact you on the scheduled date`,
           });
         }
       }
