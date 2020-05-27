@@ -134,11 +134,11 @@ export class EmailService {
     const details = {
       email: payload.adminEmail,
       subject:
-        payload.callToAction === "requestDemo"
+        payload.callToAction === "request-demo"
           ? "New demo request"
           : "New meeting request",
       html:
-        payload.callToAction === "requestDemo"
+        payload.callToAction === "request-demo"
           ? `<p>Hi ${payload.adminName}<p>
       <p>A user, ${payload.name} has just requested for a demo of our ${
               payload.parentValue

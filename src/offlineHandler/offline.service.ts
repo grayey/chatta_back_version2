@@ -40,13 +40,50 @@ export class OfflineService {
       return this.responseService.serverError(res, e.message);
     }
   }
+  validate = async (fieldsToValidate, payload) => {
+    let missingFields = "";
+    const availableFields = Object.keys(payload);
+
+    const fields = fieldsToValidate;
+    for (let index = 0; index < fields.length; index += 1) {
+      if (!availableFields.includes(fields[index])) {
+        missingFields += `${fields[index]}, `;
+      }
+    }
+    missingFields = missingFields.trim();
+    return {
+      success: !missingFields.length,
+      message:
+        missingFields.split(" ").length > 1
+          ? `${missingFields} are missing`
+          : `${missingFields} is missing`,
+    };
+  };
   async sendCallToActionEmail(
     id: String,
     payload: Offline,
     req,
     res
   ): Promise<Offline> {
+    const fieldsToValidate = {
+      "request-demo": ["name", "email", "callToAction", "parentValue"],
+      "schedule-meeting": [
+        "name",
+        "email",
+        "callToAction",
+        "date",
+        "parentValue",
+      ],
+    };
     try {
+      if (!(await this.validateEmail(payload.email))) {
+        return this.responseService.clientError(
+          res,
+          "please enter a valid email"
+        );
+      }
+
+      
       const conversationTree =
         (await this.treeModel.findOne({ phone: id })) ||
         (await this.treeModel
@@ -55,10 +92,22 @@ export class OfflineService {
           .exec());
       if (conversationTree) {
         if (
-          !(payload["callToAction"] === "scheduleMeeting" || payload["callToAction"] === "requestDemo"
-        ) ){
-          return this.responseService.clientError(res, "please include a valid call to action");
+          !(
+            payload["callToAction"] === "schedule-meeting" ||
+            payload["callToAction"] === "request-demo"
+          )
+        ) {
+          return this.responseService.clientError(
+            res,
+            "please include a valid call to action"
+          );
         }
+        const validatedFields = await this.validate(
+          fieldsToValidate[payload["callToAction"]],
+          payload
+        );
+        if (!validatedFields["success"])
+          return this.responseService.clientError(res, validatedFields["message"]);
         if (
           payload["callToAction"] &&
           payload["email"] &&
@@ -67,7 +116,7 @@ export class OfflineService {
           payload["parentValue"]
         ) {
           if (
-            payload["callToAction"] === "scheduleMeeting" &&
+            payload["callToAction"] === "schedule-meeting" &&
             !payload["date"]
           ) {
             return this.responseService.clientError(res, "date is missing");
@@ -83,7 +132,7 @@ export class OfflineService {
         const { email, name } = user;
 
         const sendUserEmail =
-          payload["callToAction"] === "requestDemo"
+          payload["callToAction"] === "request-demo"
             ? this.emailService.sendRequestDemoEmail(payload)
             : this.emailService.sendRequestScheduleEmail(payload);
         const sendAdminEmail = this.emailService.sendEmailToAdmin({
@@ -96,7 +145,7 @@ export class OfflineService {
           return this.responseService.requestSuccessful(res, {
             success: true,
             message:
-              payload["callToAction"] === "requestDemo"
+              payload["callToAction"] === "request-demo"
                 ? `Thank you for your interest in our ${
                     payload["parentValue"]
                   } services. One of your agents will contact you via the email address you provided with instructions on how to access the demo.`
