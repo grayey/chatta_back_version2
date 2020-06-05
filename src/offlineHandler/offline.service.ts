@@ -83,7 +83,6 @@ export class OfflineService {
         );
       }
 
-      
       const conversationTree =
         (await this.treeModel.findOne({ phone: id })) ||
         (await this.treeModel
@@ -107,7 +106,10 @@ export class OfflineService {
           payload
         );
         if (!validatedFields["success"])
-          return this.responseService.clientError(res, validatedFields["message"]);
+          return this.responseService.clientError(
+            res,
+            validatedFields["message"]
+          );
         if (
           payload["callToAction"] &&
           payload["email"] &&
