@@ -47,6 +47,9 @@ import { OfflineService } from "./offlineHandler/offline.service";
 import { PaymentService } from "./payment/payment.service";
 import { PaymentController } from "./payment/payment.controller";
 import { paymentSchemas } from "./payment/schemas/payment.schema";
+import { WhatsappModule } from "./whatsapp/whatsapp.module";
+import { WhatsappController } from "./whatsapp/whatsapp.controller";
+import { WhatsappService } from "./whatsapp/whatsapp.service";
 const configuration = () => ({
   port: parseInt(process.env.PORT, 10) || 9000,
   database: {
@@ -79,6 +82,7 @@ const configuration = () => ({
     PaymentModule,
     OfflineModule,
     TrainingModule,
+    WhatsappModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     MongooseModule.forRoot(process.env.DB_URL),
   ],
@@ -88,6 +92,7 @@ const configuration = () => ({
     CompaniesController,
     TrainingController,
     PaymentController,
+    WhatsappController
   ],
   providers: [
     // AppGateway,
@@ -104,6 +109,7 @@ const configuration = () => ({
     OfflineService,
     TrainingService,
     PaymentService,
+    WhatsappService
   ],
 })
 export class AppModule {}
