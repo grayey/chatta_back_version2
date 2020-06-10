@@ -100,6 +100,7 @@ export class EmailService {
        <p> >>>
        <a href=${baseUrl}/home> Go to your profile </a> <<< </p>`,
     };
+    
     return this.emailSender(details);
   }
 

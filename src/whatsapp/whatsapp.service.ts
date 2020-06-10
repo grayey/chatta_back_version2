@@ -61,4 +61,69 @@ export class WhatsappService {
       return this.responseService.serverError(res, e.message);
     }
   }
+  async transferFund(req, res): Promise<any> {
+    try {
+      return this.responseService.requestSuccessful(res, {
+        success: true,
+        message:
+          "Your funds transfer is successful! Thanks for using our service",
+      });
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
+  async changePin(req, res): Promise<any> {
+    try {
+      return this.responseService.requestSuccessful(res, {
+        success: true,
+        message: "You have successfuly changed your PIN ! Please keep it safe",
+      });
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
+  async accountStatement(req, res): Promise<any> {
+    try {
+      return this.responseService.requestSuccessful(res, {
+        success: true,
+        message:
+          "We just mailed you an attachment containing your statement of account. Thanks for using our service !",
+      });
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
+  async requestCard(req, res): Promise<any> {
+    try {
+      return this.responseService.requestSuccessful(res, {
+        success: true,
+        message:
+          "We have received your request for a new card. We will process your card within 3 business days and contact you once it is ready for pick up",
+      });
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
+  async blockCard(req, res): Promise<any> {
+    try {
+      return this.responseService.requestSuccessful(res, {
+        success: true,
+        message:
+          "Your card has been blocked ! You can request for a new card. Checkout the Request & Complaint options",
+      });
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
+  async complaint(req, res): Promise<any> {
+    try {
+      return this.responseService.requestSuccessful(res, {
+        success: true,
+        message:
+          "Thanks for taking your time to reach out. We have received and escalated your complaint. We will get back to you on this shortly",
+      });
+    } catch (e) {
+      return this.responseService.serverError(res, e.message);
+    }
+  }
 }
